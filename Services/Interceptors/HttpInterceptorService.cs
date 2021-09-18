@@ -15,30 +15,26 @@ namespace OnTest.Blazor.Services.Interceptors
         {
             _httpClientInterceptor = httpClientInterceptor ??
                 throw new ArgumentNullException(nameof(httpClientInterceptor));
-            
+
             RegisterEvent();
         }
 
         public void RegisterEvent()
         {
-            _httpClientInterceptor.BeforeSendAsync += InterceptBeforeSendAsync;
-            _httpClientInterceptor.AfterSendAsync += InterceptAftereSendAsync;
+            _httpClientInterceptor.BeforeSend += InterceptBeforeSend;
+            // _httpClientInterceptor.AfterSendAsync += InterceptAftereSendAsync;
         }
 
         public void DisposeEvent()
         {
-            _httpClientInterceptor.BeforeSendAsync -= InterceptBeforeSendAsync;
-            _httpClientInterceptor.AfterSendAsync -= InterceptAftereSendAsync;
+            _httpClientInterceptor.BeforeSend -= InterceptBeforeSend;
+            // _httpClientInterceptor.AfterSendAsync -= InterceptAftereSendAsync;
         }
 
-        public async Task InterceptBeforeSendAsync(object sender, HttpClientInterceptorEventArgs e)
+        public void InterceptBeforeSend(object sender, HttpClientInterceptorEventArgs e)
         {
+            Console.WriteLine("!!!InterceptBeforeSend!!!");
             e.Request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-        }
-
-        public async Task InterceptAftereSendAsync(object sender, HttpClientInterceptorEventArgs e)
-        {
-            
         }
 
         public void Dispose()

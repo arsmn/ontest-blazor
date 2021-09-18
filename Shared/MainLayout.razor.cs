@@ -5,10 +5,11 @@ using OnTest.Blazor.Settings;
 
 namespace OnTest.Blazor.Shared
 {
-    public partial class MainLayout : IDisposable
+    public partial class MainLayout
     {
         private MudTheme _currentTheme;
         private bool _rightToLeft = false;
+
         private async Task RightToLeftToggle(bool value)
         {
             _rightToLeft = value;
@@ -20,7 +21,6 @@ namespace OnTest.Blazor.Shared
             _currentTheme = Theme.Default;
             // _currentTheme = await _clientPreferenceManager.GetCurrentThemeAsync();
             // _rightToLeft = await _clientPreferenceManager.IsRTL();
-            _interceptorService.RegisterEvent();
         }
 
         private async Task DarkMode()
@@ -29,11 +29,6 @@ namespace OnTest.Blazor.Shared
             // _currentTheme = isDarkMode
             //     ? BlazorHeroTheme.DefaultTheme
             //     : BlazorHeroTheme.DarkTheme;
-        }
-
-        public void Dispose()
-        {
-            _interceptorService.DisposeEvent();
         }
     }
 }

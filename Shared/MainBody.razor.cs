@@ -40,7 +40,6 @@ namespace OnTest.Blazor.Shared
         protected override async Task OnInitializedAsync()
         {
             // _rightToLeft = await _clientPreferenceManager.IsRTL();
-            _interceptorService.RegisterEvent();
 
             // _snackBar.Add(string.Format(_localizer["Welcome {0}"], FirstName), Severity.Success);
         }

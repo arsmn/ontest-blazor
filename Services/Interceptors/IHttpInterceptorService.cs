@@ -7,7 +7,6 @@ namespace OnTest.Blazor.Services.Interceptors
     {
         void RegisterEvent();
         void DisposeEvent();
-        Task InterceptBeforeSendAsync(object sender, HttpClientInterceptorEventArgs e);
-        Task InterceptAftereSendAsync(object sender, HttpClientInterceptorEventArgs e);
+        void InterceptBeforeSend(object sender, HttpClientInterceptorEventArgs e);
     }
 }
