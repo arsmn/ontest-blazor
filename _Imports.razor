@@ -1,0 +1,27 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using OnTest.Blazor
+@using OnTest.Blazor.Shared
+@using MudBlazor
+@using Blazored.FluentValidation
+@using OnTest.Blazor.Transport.Auth
+@using OnTest.Blazor.Pages.Auth
+@using OnTest.Blazor.Settings
+@using OnTest.Blazor.Services.Auth
+@using OnTest.Blazor.Services.Interceptors
+@using OnTest.Blazor.Authentication
+
+@attribute [Authorize]
+@inject ISnackbar _snackBar
+@inject NavigationManager _navigationManager
+@inject HostStateProvider _stateProvider
+@inject IAuthService _authService
+@inject IHttpInterceptorService _interceptorService
