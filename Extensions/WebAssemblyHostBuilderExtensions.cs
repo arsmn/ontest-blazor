@@ -37,7 +37,6 @@ namespace OnTest.Blazor.Extensions
                     configuration.SnackbarConfiguration.VisibleStateDuration = 3000;
                     configuration.SnackbarConfiguration.ShowCloseIcon = false;
                 })
-                .AddScoped<HostStateProvider>()
                 .AddScoped<AuthenticationStateProvider, HostStateProvider>()
                 .AddServices()
                 .AddValidators()

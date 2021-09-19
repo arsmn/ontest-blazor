@@ -15,17 +15,16 @@ namespace OnTest.Blazor.Pages.Auth
 
         protected override async Task OnInitializedAsync()
         {
-            throw new Exception();
-            var state = await _stateProvider.GetAuthenticationStateAsync();
+            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
             if (state.User.Identity.IsAuthenticated)
-                _navigationManager.NavigateTo("/ddd");
+                _navigationManager.NavigateTo("/");
         }
 
         private async Task SubmitAsync()
         {
             var result = await _authService.Signin(_model);
             if (result.Succeeded)
-                await (_stateProvider as HostStateProvider).StateChangedNotifyAsync();
+                await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
             else
                 _snackBar.Add(result.Error.Message, Severity.Error);
         }

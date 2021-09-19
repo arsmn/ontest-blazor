@@ -27,3 +27,8 @@
 <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Always">
     <NavMenu />
 </MudDrawer>
+<MudMainContent>
+    <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+            @ChildContent
+    </MudContainer>
+</MudMainContent>

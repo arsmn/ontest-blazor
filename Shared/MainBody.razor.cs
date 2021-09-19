@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
@@ -31,10 +32,10 @@ namespace OnTest.Blazor.Shared
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
-            {
-                await LoadDataAsync();
-            }
+            // if (firstRender)
+            // {
+            //     await LoadDataAsync();
+            // }
         }
 
         private async Task LoadDataAsync()
