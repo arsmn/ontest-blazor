@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 
 <MudRTLProvider RightToLeft="@_rightToLeft">
-    <audio id="notification" src="/media/notification.mp3"/>
+    @* <audio id="notification" src="/media/notification.mp3"/> *@
     <MudThemeProvider Theme="_currentTheme" />
     <MudDialogProvider />
     <MudSnackbarProvider />
@@ -9,7 +9,6 @@
         <NotAuthorized>
             <MudAppBar Elevation="4" Color="Color.Primary">
                 <MudSpacer />
-                <LanguageSelector />
                     <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => DarkMode())" />
             </MudAppBar>
 
@@ -21,7 +20,7 @@
         </NotAuthorized>
         <Authorized>
             <MudLayout>
-                <MainBody OnDarkModeToggle="@DarkMode" OnRightToLeftToggle="@RightToLeftToggle">
+                <MainBody OnDarkModeToggle="@DarkMode">
                     @Body
                 </MainBody>
             </MudLayout>

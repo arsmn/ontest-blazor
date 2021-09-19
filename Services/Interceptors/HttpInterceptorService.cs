@@ -33,7 +33,6 @@ namespace OnTest.Blazor.Services.Interceptors
 
         public void InterceptBeforeSend(object sender, HttpClientInterceptorEventArgs e)
         {
-            Console.WriteLine("!!!InterceptBeforeSend!!!");
             e.Request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
         }
 

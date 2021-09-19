@@ -5,14 +5,8 @@ namespace OnTest.Blazor.Shared
 {
     public partial class MainBody
     {
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
-
-        [Parameter]
-        public EventCallback OnDarkModeToggle { get; set; }
-
-        [Parameter]
-        public EventCallback<bool> OnRightToLeftToggle { get; set; }
+        [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter] public EventCallback OnDarkModeToggle { get; set; }
 
         private bool _drawerOpen = true;
 
@@ -22,15 +16,6 @@ namespace OnTest.Blazor.Shared
         private string SecondName { get; set; }
         private string Email { get; set; }
         private char FirstLetterOfName { get; set; }
-        private bool _rightToLeft = false;
-
-        private async Task RightToLeftToggle()
-        {
-            // var isRtl = await _clientPreferenceManager.ToggleLayoutDirection();
-            // _rightToLeft = isRtl;
-
-            // await OnRightToLeftToggle.InvokeAsync(isRtl);
-        }
 
         public async Task ToggleDarkMode()
         {

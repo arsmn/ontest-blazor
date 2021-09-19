@@ -3,6 +3,7 @@ using Blazored.FluentValidation;
 using OnTest.Blazor.Transport.Auth;
 using System.Threading.Tasks;
 using OnTest.Blazor.Authentication;
+using System;
 
 namespace OnTest.Blazor.Pages.Auth
 {
@@ -14,9 +15,10 @@ namespace OnTest.Blazor.Pages.Auth
 
         protected override async Task OnInitializedAsync()
         {
+            throw new Exception();
             var state = await _stateProvider.GetAuthenticationStateAsync();
             if (state.User.Identity.IsAuthenticated)
-                _navigationManager.NavigateTo("/");
+                _navigationManager.NavigateTo("/ddd");
         }
 
         private async Task SubmitAsync()

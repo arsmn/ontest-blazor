@@ -38,11 +38,11 @@ namespace OnTest.Blazor.Authentication
             {
                 var claims = new Claim[]
                 {
+                    new Claim(ClaimTypes.Email, result.Data.Email),
                     new Claim(ClaimTypes.Name, result.Data.FirstName),
                     new Claim(ClaimTypes.Surname, result.Data.LastName),
                     new Claim(ClaimTypes.GivenName, result.Data.FullName),
-                     new Claim(ClaimTypes.NameIdentifier, result.Data.Username),
-                    new Claim(ClaimTypes.Email, result.Data.Email)
+                    new Claim(ClaimTypes.NameIdentifier, result.Data.Username)
                 };
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "cookie"));
             }
