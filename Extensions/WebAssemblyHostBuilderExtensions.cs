@@ -40,6 +40,7 @@ namespace OnTest.Blazor.Extensions
                 .AddScoped<AuthenticationStateProvider, HostStateProvider>()
                 .AddServices()
                 .AddValidators()
+                .AddLazyCache()
                 .AddScoped(sp => sp
                     .GetRequiredService<IHttpClientFactory>()
                     .CreateClient(ClientName).EnableIntercept(sp))

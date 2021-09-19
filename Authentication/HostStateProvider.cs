@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using LazyCache;
 using Microsoft.AspNetCore.Components.Authorization;
 using OnTest.Blazor.Services.Auth;
 using OnTest.Blazor.Transport.Auth;
@@ -12,23 +13,35 @@ namespace OnTest.Blazor.Authentication
 {
     public class HostStateProvider : AuthenticationStateProvider
     {
+        private const string CacheKey = "Auth-State";
+        private readonly IAppCache _appCache;
         private readonly IAuthService _authService;
 
-        public HostStateProvider(IAuthService authService)
+        public HostStateProvider(
+            IAppCache appCache,
+            IAuthService authService
+        )
         {
+            _appCache = appCache ??
+                throw new ArgumentNullException(nameof(appCache));
+
             _authService = authService ??
                 throw new ArgumentNullException(nameof(authService));
         }
 
         public async Task StateChangedNotifyAsync()
         {
+            _appCache.Remove(CacheKey);
             var authState = Task.FromResult(await GetAuthenticationStateAsync());
             NotifyAuthenticationStateChanged(authState);
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            return new AuthenticationState(await FetchSignedInUser());
+            Func<Task<ClaimsPrincipal>> UserGetter = async () => await this.FetchSignedInUser();
+            var user = await _appCache.GetOrAddAsync(CacheKey, UserGetter);
+
+            return new AuthenticationState(user);
         }
 
         private async Task<ClaimsPrincipal> FetchSignedInUser()

@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using OnTest.Blazor.Extensions;
 
 namespace OnTest.Blazor.Shared
 {
@@ -18,9 +20,8 @@ namespace OnTest.Blazor.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            // _rightToLeft = await _clientPreferenceManager.IsRTL();
-
-            // _snackBar.Add(string.Format(_localizer["Welcome {0}"], FirstName), Severity.Success);
+            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            _snackBar.Add($"Welcome {state.User.GetFirstName()} {state.User.GetLastName()}", Severity.Success);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
