@@ -18,9 +18,12 @@
 @using OnTest.Blazor.Services.Auth
 @using OnTest.Blazor.Services.Interceptors
 @using OnTest.Blazor.Authentication
+@using OnTest.Blazor.Shared.Components
+@using OnTest.Blazor.Shared.Dialogs
 
 @attribute [Authorize]
 @inject ISnackbar _snackBar
+@inject IDialogService _dialogService
 @inject NavigationManager _navigationManager
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject IAuthorizationService _authorizationService

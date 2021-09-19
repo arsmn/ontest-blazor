@@ -5,7 +5,8 @@
         <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
     </MudToolBar>
     <MudSpacer />
-    <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+    <UserCard Mode="@UserCardMode.Menu" Class="mt-1 ml-4" />
+    @* <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
         <ActivatorContent>
             @if (string.IsNullOrEmpty(ImageDataUrl))
             {
@@ -17,12 +18,12 @@
             }
         </ActivatorContent>
         <ChildContent>
-            @* <UserCard Class="mt-n2" /> *@
+            <UserCard Class="mt-n2" />
             <MudDivider Class="mb-2" />
             <MudListItem Text="Account" Href="/account" Icon="@Icons.Material.Outlined.Person" />
             <MudListItem Text="Logout" Icon="@Icons.Material.Filled.Logout" OnClick="Logout" />
         </ChildContent>
-    </MudMenu>
+    </MudMenu> *@
 </MudAppBar>
 <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Always">
     <NavMenu />

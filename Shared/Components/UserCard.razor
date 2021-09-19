@@ -1,0 +1,44 @@
+@namespace OnTest.Blazor.Shared.Components
+
+@if (Mode == UserCardMode.Card)
+{
+    <MudCard Elevation="0" Square="true" Class="@Class">
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            @if (string.IsNullOrEmpty(ImageUrl))
+                {
+                    <MudAvatar Color="Color.Secondary">@FirstLetterOfName</MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Image="@ImageUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                }
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.body2">@FirstName @LastName</MudText>
+                <MudText Typo="Typo.caption">@Email</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+    </MudCard>
+}
+else
+{
+    <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+    <ActivatorContent>
+        @if (string.IsNullOrEmpty(ImageUrl))
+            {
+                <MudAvatar Color="Color.Secondary">@FirstLetterOfName</MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Image="@ImageUrl" Style="height:50px; width:50px;"> </MudAvatar>
+            }
+        </ActivatorContent>
+        <ChildContent>
+            <UserCard Mode="@UserCardMode.Card" Class="mt-n2" />
+            <MudDivider Class="mb-2" />
+            <MudListItem Text="Account" Href="/account" Icon="@Icons.Material.Outlined.Person" />
+            <MudListItem Text="Logout" Icon="@Icons.Material.Filled.Logout" OnClick="Signout" />
+        </ChildContent>
+    </MudMenu>
+}

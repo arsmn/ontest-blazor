@@ -11,13 +11,6 @@ namespace OnTest.Blazor.Shared
 
         private bool _drawerOpen = true;
 
-        private string CurrentUserId { get; set; }
-        private string ImageDataUrl { get; set; }
-        private string FirstName { get; set; }
-        private string SecondName { get; set; }
-        private string Email { get; set; }
-        private char FirstLetterOfName { get; set; }
-
         public async Task ToggleDarkMode()
         {
             await OnDarkModeToggle.InvokeAsync();

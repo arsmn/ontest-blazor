@@ -10,6 +10,7 @@ namespace OnTest.Blazor.Services.Auth
     {
         Task<IResult> Signin(SigninRequest request);
         Task<IResult> Signup(SignupRequest request);
+        Task<IResult> Signout();
         Task<IResult<User>> Whoami();
     }
 }

@@ -27,6 +27,13 @@ namespace OnTest.Blazor.Services.Auth
             return result;
         }
 
+        public async Task<IResult> Signout()
+        {
+            var response = await _httpClient.PostAsync("auth/signout", null);
+            var result = await response.ToResult();
+            return result;
+        }
+
         public async Task<IResult> Signup(SignupRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("auth/signup", request);

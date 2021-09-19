@@ -4,6 +4,7 @@
 @layout MainLayout
 @attribute [Authorize]
 
+<OnTestTitle Title="Dashboard" Description="" />
 @if (!_loaded)
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
@@ -22,7 +23,7 @@ else
         </MudItem>
         <MudItem xs="12" sm="6" md="3">
             <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                <MudIcon Icon="@Icons.Material.Filled.PanoramaPhotosphereSelect" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                <MudIcon Icon="@Icons.Material.Filled.Done" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
                 <div>
                     <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Taken Tests</MudText>
                     <MudText @bind-Value="@TakenTestsCount" Typo="Typo.h5">@TakenTestsCount</MudText>
@@ -31,7 +32,7 @@ else
         </MudItem>
         <MudItem xs="12" sm="6" md="3">
             <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-                <MudIcon Icon="@Icons.Material.Filled.AttachFile" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                <MudIcon Icon="@Icons.Material.Filled.NextPlan" Color="Color.Info" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
                 <div>
                     <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Upcoming Tests</MudText>
                     <MudText @bind-Value="@UpcomingTestsCount" Typo="Typo.h5">@UpcomingTestsCount</MudText>
