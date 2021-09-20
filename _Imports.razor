@@ -20,12 +20,15 @@
 @using OnTest.Blazor.Authentication
 @using OnTest.Blazor.Shared.Components
 @using OnTest.Blazor.Shared.Dialogs
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Options
 
 @attribute [Authorize]
 @inject ISnackbar _snackBar
+@inject IAuthService _authService
+@inject IOptions<AppConfig> options
 @inject IDialogService _dialogService
 @inject NavigationManager _navigationManager
-@inject AuthenticationStateProvider _authenticationStateProvider
 @inject IAuthorizationService _authorizationService
-@inject IAuthService _authService
 @inject IHttpInterceptorService _interceptorService
+@inject AuthenticationStateProvider _authenticationStateProvider

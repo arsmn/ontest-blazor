@@ -12,6 +12,8 @@ using System.Net.Http;
 using FluentValidation;
 using Validators;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using OnTest.Blazor.Settings;
 
 namespace OnTest.Blazor.Extensions
 {
@@ -41,6 +43,7 @@ namespace OnTest.Blazor.Extensions
                 .AddServices()
                 .AddValidators()
                 .AddLazyCache()
+                .Configure<AppConfig>(options => builder.Configuration.GetSection("OnTest").Bind(options))
                 .AddScoped(sp => sp
                     .GetRequiredService<IHttpClientFactory>()
                     .CreateClient(ClientName).EnableIntercept(sp))
@@ -48,7 +51,7 @@ namespace OnTest.Blazor.Extensions
                 {
                     client.DefaultRequestHeaders.AcceptLanguage.Clear();
                     client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
-                    client.BaseAddress = new Uri(builder.Configuration["BaseAddress"]);
+                    client.BaseAddress = new Uri(builder.Configuration["OnTest:BaseAddress"]);
                 });
             builder.Services.AddHttpClientInterceptor();
 
