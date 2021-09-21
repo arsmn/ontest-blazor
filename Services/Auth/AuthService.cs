@@ -20,31 +20,45 @@ namespace OnTest.Blazor.Services.Auth
                 throw new ArgumentNullException(nameof(httpClient));
         }
 
-        public async Task<IResult> Signin(SigninRequest request)
+        public async Task<IResult> SigninAsync(SigninRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("auth/signin", request);
             var result = await response.ToResult();
             return result;
         }
 
-        public async Task<IResult> Signout()
+        public async Task<IResult> SignoutAsync()
         {
             var response = await _httpClient.PostAsync("auth/signout", null);
             var result = await response.ToResult();
             return result;
         }
 
-        public async Task<IResult> Signup(SignupRequest request)
+        public async Task<IResult> SignupAsync(SignupRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("auth/signup", request);
             var result = await response.ToResult();
             return result;
         }
 
-        public async Task<IResult<User>> Whoami()
+        public async Task<IResult<User>> WhoamiAsync()
         {
             var response = await _httpClient.GetAsync("auth/whoami");
             var result = await response.ToResult<User>();
+            return result;
+        }
+
+        public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request)
+        {
+            var response = await _httpClient.PostAsJsonAsync("auth/forgot-password", request);
+            var result = await response.ToResult();
+            return result;
+        }
+
+        public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            var response = await _httpClient.PostAsJsonAsync("auth/reset-password", request);
+            var result = await response.ToResult();
             return result;
         }
     }

@@ -7,8 +7,7 @@
     <MudGrid>
         <MudItem xs="12">
             <div class="d-flex justify-center">
-                @* <MudIcon Icon="@CustomIcons.BlazorHero" Color="Color.Primary" Size="Size.Large" ViewBox="0 0 500 500"
-                    Style="width: 100px; height: 100px;" /> *@
+                <MudIcon Icon="@Icons.Material.Filled.Login" Color="Color.Primary" Style="width:54px; height:54px;" />
             </div>
         </MudItem>
         <DataAnnotationsValidator />
@@ -39,7 +38,7 @@
         </MudItem>
         <MudItem xs="12" Class="d-flex justify-space-between align-center">
             <MudCheckBox T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1"></MudCheckBox>
-            <MudLink Href="/account/forgot-password">Forgot password?</MudLink>
+            <MudLink Href="/forgot-password">Forgot password?</MudLink>
         </MudItem>
         <MudItem xs="12" Class="d-flex justify-center">
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="@(!Validated)"

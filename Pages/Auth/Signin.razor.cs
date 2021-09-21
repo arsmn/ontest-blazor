@@ -22,7 +22,7 @@ namespace OnTest.Blazor.Pages.Auth
 
         private async Task SubmitAsync()
         {
-            var result = await _authService.Signin(_model);
+            var result = await _authService.SigninAsync(_model);
             if (result.Succeeded)
                 await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
             else

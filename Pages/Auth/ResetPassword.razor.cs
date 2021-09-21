@@ -1,32 +1,41 @@
-using System;
 using System.Threading.Tasks;
 using Blazored.FluentValidation;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using OnTest.Blazor.Services.Auth;
 using OnTest.Blazor.Transport.Auth;
 
 namespace OnTest.Blazor.Pages.Auth
 {
-    public partial class Signup
+    public partial class ResetPassword
     {
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
-        private SignupRequest _model = new();
+        private readonly ResetPasswordRequest _model = new();
+
+        [Parameter] public string Code { get; set; }
+
+        protected override void OnParametersSet()
+        {
+            if (Code.Length <= 30)
+                _navigationManager.NavigateTo("/");
+
+            _model.Code = Code;
+        }
 
         private async Task SubmitAsync()
         {
-            var result = await _authService.SignupAsync(_model);
+            var result = await _authService.ResetPasswordAsync(_model);
             if (result.Succeeded)
             {
-                _snackBar.Add("You account has been successfully created!", Severity.Success);
-                _navigationManager.NavigateTo("/signin");
-                _model = new();
+                _snackBar.Add("You password changes successfully. Please sign in", Severity.Success);
+                _navigationManager.NavigateTo("/");
             }
             else
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
         }
+
 
         private bool _passwordVisibility;
         private InputType _passwordInput = InputType.Password;

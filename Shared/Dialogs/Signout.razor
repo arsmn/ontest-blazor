@@ -29,7 +29,7 @@
 
     private async Task Submit()
     {
-        var result = await _authService.Signout();
+        var result = await _authService.SignoutAsync();
         if (result.Succeeded)
         {
             await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();

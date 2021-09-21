@@ -47,7 +47,7 @@ namespace OnTest.Blazor.Authentication
 
         private async Task<ClaimsPrincipal> FetchSignedInUser()
         {
-            var result = await _authService.Whoami();
+            var result = await _authService.WhoamiAsync();
             if (result.Succeeded)
             {
                 var claims = new Claim[]

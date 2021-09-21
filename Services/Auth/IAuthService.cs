@@ -8,9 +8,11 @@ namespace OnTest.Blazor.Services.Auth
 {
     public interface IAuthService : IService
     {
-        Task<IResult> Signin(SigninRequest request);
-        Task<IResult> Signup(SignupRequest request);
-        Task<IResult> Signout();
-        Task<IResult<User>> Whoami();
+        Task<IResult> SigninAsync(SigninRequest request);
+        Task<IResult> SignupAsync(SignupRequest request);
+        Task<IResult> SignoutAsync();
+        Task<IResult<User>> WhoamiAsync();
+        Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request);
+        Task<IResult> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }
