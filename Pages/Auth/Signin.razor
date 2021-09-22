@@ -37,7 +37,7 @@
                 AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
         </MudItem>
         <MudItem xs="12" Class="d-flex justify-space-between align-center">
-            <MudCheckBox T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1"></MudCheckBox>
+            <MudCheckBox T="bool" @bind-Checked="_model.Remember" Label="Remember me?" Color="Color.Primary" Class="ml-n1"></MudCheckBox>
             <MudLink Href="/forgot-password">Forgot password?</MudLink>
         </MudItem>
         <MudItem xs="12" Class="d-flex justify-center">

@@ -1,0 +1,27 @@
+@page "/verify-email/{code}"
+@using Transport.Account
+
+@code {
+    [Parameter] public string Code { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Code.Length <= 30)
+            _navigationManager.NavigateTo("/");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _accountService.VerificationAsync(new VerificationRequest
+        {
+            Code = Code
+        });
+
+        if (result.Succeeded)
+            _snackBar.Add("Your email verified!", Severity.Success);
+        else
+            _snackBar.Add(result.Error.Message, Severity.Error);
+
+        _navigationManager.NavigateTo("/");
+    }
+}

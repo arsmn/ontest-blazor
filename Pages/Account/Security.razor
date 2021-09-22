@@ -1,4 +1,8 @@
-<EditForm Model="@_model" OnValidSubmit="SubmitAsync">
+@attribute [Authorize]
+
+@if (PasswordSet)
+{
+    <EditForm Model="@_changeModel" OnValidSubmit="SubmitChangePasswordAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <MudCard Elevation="25">
         <MudCardHeader>
@@ -9,18 +13,72 @@
         <MudCardContent>
             <MudGrid>
                 <MudItem xs="12">
-                    <MudTextField T="string" @bind-Value="_model.CurrentPassword" For="@(() => _model.CurrentPassword)" Label="Current Password" Variant="Variant.Outlined" InputType="_currentPasswordInput" Adornment="Adornment.End" AdornmentIcon="@_currentPasswordInputIcon" OnAdornmentClick="@(() => ToggleCurrentPasswordVisibility())" />
+                    <MudTextField T="string" @bind-Value="_changeModel.CurrentPassword"
+                        For="@(() => _changeModel.CurrentPassword)" Label="Current Password" Variant="Variant.Outlined"
+                        InputType="_currentPasswordInput" Adornment="Adornment.End"
+                        AdornmentIcon="@_currentPasswordInputIcon"
+                        OnAdornmentClick="@(() => ToggleCurrentPasswordVisibility())" />
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudTextField T="string" @bind-Value="_model.NewPassword" For="@(() => _model.NewPassword)" Label="Password" Variant="Variant.Outlined" InputType="_newPasswordInput" Adornment="Adornment.End" AdornmentIcon="@_newPasswordInputIcon" OnAdornmentClick="@(() => ToggleNewPasswordVisibility())" />
+                    <MudTextField T="string" @bind-Value="_changeModel.NewPassword"
+                        For="@(() => _changeModel.NewPassword)" Label="Password" Variant="Variant.Outlined"
+                        InputType="_newPasswordInput" Adornment="Adornment.End" AdornmentIcon="@_newPasswordInputIcon"
+                        OnAdornmentClick="@(() => ToggleNewPasswordVisibility())" />
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudTextField T="string" @bind-Value="_model.ConfirmNewPassword" For="@(() => _model.ConfirmNewPassword)" Label="Password Confirmation" Variant="Variant.Outlined" InputType="_newPasswordInput" Adornment="Adornment.End" AdornmentIcon="@_newPasswordInputIcon" OnAdornmentClick="@(() => ToggleNewPasswordVisibility())" />
+                    <MudTextField T="string" @bind-Value="_changeModel.ConfirmNewPassword"
+                        For="@(() => _changeModel.ConfirmNewPassword)" Label="Password Confirmation"
+                        Variant="Variant.Outlined" InputType="_newPasswordInput" Adornment="Adornment.End"
+                        AdornmentIcon="@_newPasswordInputIcon"
+                        OnAdornmentClick="@(() => ToggleNewPasswordVisibility())" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudCheckBox T="bool" @bind-Checked="_changeModel.Terminate" For="@(() => _changeModel.Terminate)" Label="Terminate other devices?" Color="Color.Primary" Class="ml-n1">
+                    </MudCheckBox>
                 </MudItem>
             </MudGrid>
         </MudCardContent>
         <MudCardActions Class="pb-4 pl-4">
-            <MudButton Variant="Variant.Filled" Disabled="@(!Validated)" Color="Color.Primary" ButtonType="ButtonType.Submit" Class="ml-auto">Change Password</MudButton>
+            <MudButton Variant="Variant.Filled" Disabled="@(!Validated)" Color="Color.Primary"
+                ButtonType="ButtonType.Submit" Class="ml-auto">Change Password</MudButton>
         </MudCardActions>
     </MudCard>
 </EditForm>
+}
+else
+{
+    <EditForm Model="@_setModel" OnValidSubmit="SubmitSetPasswordAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudCard Elevation="25">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText>Set Password</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudAlert Severity="Severity.Warning">You have not set a password. Please create a password to sign in with your credentials!</MudAlert>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" @bind-Value="_setModel.Password" For="@(() => _setModel.Password)"
+                        Label="Password" Variant="Variant.Outlined" InputType="_newPasswordInput"
+                        Adornment="Adornment.End" AdornmentIcon="@_newPasswordInputIcon"
+                        OnAdornmentClick="@(() => ToggleNewPasswordVisibility())" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" @bind-Value="_setModel.ConfirmPassword"
+                        For="@(() => _setModel.ConfirmPassword)" Label="Password Confirmation"
+                        Variant="Variant.Outlined" InputType="_newPasswordInput" Adornment="Adornment.End"
+                        AdornmentIcon="@_newPasswordInputIcon"
+                        OnAdornmentClick="@(() => ToggleNewPasswordVisibility())" />
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions Class="pb-4 pl-4">
+            <MudButton Variant="Variant.Filled" Disabled="@(!Validated)" Color="Color.Primary"
+                ButtonType="ButtonType.Submit" Class="ml-auto">Set Password</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+}

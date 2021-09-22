@@ -11,6 +11,7 @@ namespace OnTest.Blazor.Transport.Shared.Models
         public string Username { get; set; }
         public string Avatar { get; set; }
         public bool EmailVerified { get; set; }
-        public string FullName => FirstName + " " + LastName;
+        public bool PasswordSet { get; set; }
+        public string FullName { get; set; }
     }
 }

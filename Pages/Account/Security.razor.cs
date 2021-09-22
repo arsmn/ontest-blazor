@@ -9,17 +9,45 @@ namespace OnTest.Blazor.Pages.Account
     {
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
-        private readonly ChangePasswordRequest _model = new();
+        private readonly ChangePasswordRequest _changeModel = new();
+        private readonly SetPasswordRequest _setModel = new();
+        private bool PasswordSet = true;
 
-        private async Task SubmitAsync()
+        protected override async Task OnInitializedAsync()
         {
-            var result = await _accountService.ChangePasswordAsync(_model);
+            var result = await _accountService.WhoamiAsync();
+            if (result.Succeeded)
+                PasswordSet = result.Data.PasswordSet;
+            else
+                _snackBar.Add(result.Error.Message, MudBlazor.Severity.Error);
+        }
+
+        private async Task SubmitChangePasswordAsync()
+        {
+            var result = await _accountService.ChangePasswordAsync(_changeModel);
             if (result.Succeeded)
             {
-                _model.NewPassword = "";
-                _model.CurrentPassword = "";
-                _model.ConfirmNewPassword = "";
-                _snackBar.Add("Password Changed", Severity.Success);
+                _changeModel.Terminate = false;
+                _changeModel.NewPassword = "";
+                _changeModel.CurrentPassword = "";
+                _changeModel.ConfirmNewPassword = "";
+                _snackBar.Add("Password Changed!", Severity.Success);
+            }
+            else
+            {
+                _snackBar.Add(result.Error.Message, Severity.Error);
+            }
+        }
+
+        private async Task SubmitSetPasswordAsync()
+        {
+            var result = await _accountService.SetPasswordAsync(_setModel);
+            if (result.Succeeded)
+            {
+                PasswordSet = true;
+                _setModel.Password = "";
+                _setModel.ConfirmPassword = "";
+                _snackBar.Add("Password Set!", Severity.Success);
             }
             else
             {

@@ -9,5 +9,6 @@ namespace OnTest.Blazor.Transport.Account
 
         [JsonIgnore]
         public string ConfirmNewPassword { get; set; }
+        public bool Terminate { get; set; }
     }
 }

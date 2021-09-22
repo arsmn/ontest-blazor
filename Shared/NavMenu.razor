@@ -1,4 +1,9 @@
-﻿<UserCard />
-<MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Home">Home</MudNavLink>
+﻿<MudNavMenu>
+    <UserCard />
+    <MudDivider Class="my-2" />
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavGroup Title="Settings" Icon="@Icons.Filled.Settings" Expanded="false">
+        <MudNavLink Href="/settings/profile" Icon="@Icons.Material.Filled.Person">Profile</MudNavLink>
+        <MudNavLink Href="/settings/security" Icon="@Icons.Material.Filled.Security">Security</MudNavLink>
+    </MudNavGroup>
 </MudNavMenu>

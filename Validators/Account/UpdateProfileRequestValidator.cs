@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using Microsoft.AspNetCore.Components.Authorization;
 using OnTest.Blazor.Extensions;
@@ -32,9 +33,11 @@ namespace OnTest.Blazor.Validators.Account
                 .MinimumLength(3).WithMessage("{PropertyName} must be at least of length {MinLength}")
                 .MaximumLength(50).WithMessage("{PropertyName} must be at least of length {MaxLength}");
             RuleFor(request => request.Username)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .MinimumLength(3).WithMessage("{PropertyName} must be at least of length {MinLength}")
-                .MaximumLength(50).WithMessage("{PropertyName} must be at least of length {MaxLength}")
+                .MaximumLength(30).WithMessage("{PropertyName} must be at least of length {MaxLength}")
+                .Matches(@"^[A-Za-z][A-Za-z0-9_]*$").WithMessage("{PropertyName} must contain only alphabet, number, -, _")
                 .MustAsync(async (obj, username, context, cancellation) =>
                 {
                     if (string.IsNullOrEmpty(username))

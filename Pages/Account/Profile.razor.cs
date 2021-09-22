@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Blazored.FluentValidation;
 using MudBlazor;
+using OnTest.Blazor.Authentication;
 using OnTest.Blazor.Transport.Account;
 using Toolbelt.Blazor;
 
@@ -52,6 +53,7 @@ namespace OnTest.Blazor.Pages.Account
             if (result.Succeeded)
             {
                 _snackBar.Add("Your profile updated", Severity.Success);
+                await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
             }
             else
             {

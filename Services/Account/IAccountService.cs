@@ -9,6 +9,7 @@ namespace OnTest.Blazor.Services.Account
     {
         Task<IResult<User>> WhoamiAsync();
         Task<IResult> ChangePasswordAsync(ChangePasswordRequest request);
+        Task<IResult> SetPasswordAsync(SetPasswordRequest request);
         Task<IResult> UpdateProfileAsync(UpdateProfileRequest request);
         Task<IResult> CheckUsernameAsync(string username);
         Task<IResult> CheckEmailAsync(string email);

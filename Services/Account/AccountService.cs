@@ -40,6 +40,13 @@ namespace OnTest.Blazor.Services.Account
             return result;
         }
 
+        public async Task<IResult> SetPasswordAsync(SetPasswordRequest request)
+        {
+            var response = await _httpClient.PostAsJsonAsync("account/set-password", request, JsonExtensions.Options);
+            var result = await response.ToResult();
+            return result;
+        }
+
         public async Task<IResult> CheckUsernameAsync(string username)
         {
             return await CheckAsync("username", username);
@@ -66,7 +73,7 @@ namespace OnTest.Blazor.Services.Account
 
         public async Task<IResult> VerificationAsync(VerificationRequest request)
         {
-            var response = await _httpClient.PostAsJsonAsync("account/verification", request, JsonExtensions.Options);
+            var response = await _httpClient.PostAsJsonAsync("account/verify", request, JsonExtensions.Options);
             var result = await response.ToResult();
             return result;
         }

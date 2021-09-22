@@ -34,7 +34,7 @@ namespace OnTest.Blazor.Pages.Auth
             var result = await _authService.ResetPasswordAsync(_model);
             if (result.Succeeded)
             {
-                _snackBar.Add("You password changes successfully. Please sign in", Severity.Success);
+                _snackBar.Add("Your password reset successfully. Please sign in", Severity.Success);
                 _navigationManager.NavigateTo("/");
             }
             else
