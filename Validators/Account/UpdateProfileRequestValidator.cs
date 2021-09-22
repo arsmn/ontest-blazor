@@ -51,9 +51,9 @@ namespace OnTest.Blazor.Validators.Account
                     if (result.Succeeded)
                         return true;
 
-                    context.MessageFormatter.AppendArgument("UsernameErrorMessage", result.Error.Message);
+                    context.MessageFormatter.AppendArgument("CheckErrorMessage", result.Error.Message);
                     return false;
-                }).WithMessage("{UsernameErrorMessage}");
+                }).WithMessage("{CheckErrorMessage}");
         }
     }
 }
