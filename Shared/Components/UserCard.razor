@@ -3,9 +3,9 @@
 @if (Mode == UserCardMode.Card)
 {
     <MudCard Elevation="0" Square="true" Class="@Class">
-    <MudCardHeader>
-        <CardHeaderAvatar>
-            @if (string.IsNullOrEmpty(ImageUrl))
+        <MudCardHeader>
+            <CardHeaderAvatar>
+                @if (string.IsNullOrEmpty(ImageUrl))
                 {
                     <MudAvatar Color="Color.Secondary">@FirstLetterOfName</MudAvatar>
                 }
@@ -24,8 +24,8 @@
 else
 {
     <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
-    <ActivatorContent>
-        @if (string.IsNullOrEmpty(ImageUrl))
+        <ActivatorContent>
+            @if (string.IsNullOrEmpty(ImageUrl))
             {
                 <MudAvatar Color="Color.Secondary">@FirstLetterOfName</MudAvatar>
             }

@@ -14,6 +14,7 @@ using Validators;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using OnTest.Blazor.Settings;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 namespace OnTest.Blazor.Extensions
 {
@@ -52,6 +53,10 @@ namespace OnTest.Blazor.Extensions
                     client.DefaultRequestHeaders.AcceptLanguage.Clear();
                     client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
                     client.BaseAddress = new Uri(builder.Configuration["OnTest:BaseAddress"]);
+                }).AddHttpMessageHandler(() => new DefaultBrowserOptionsMessageHandler
+                {
+                    DefaultBrowserRequestMode = BrowserRequestMode.Cors,
+                    DefaultBrowserRequestCredentials = BrowserRequestCredentials.Include
                 });
             builder.Services.AddHttpClientInterceptor();
 

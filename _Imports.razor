@@ -1,34 +1,41 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+
+@using Microsoft.JSInterop
+@using Microsoft.Extensions.Options
+@using Microsoft.Extensions.Configuration
 @using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
-@using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+@using MudBlazor
+
+@using Blazored.FluentValidation
+
+@using Toolbelt.Blazor
+
 @using OnTest.Blazor
 @using OnTest.Blazor.Shared
-@using MudBlazor
-@using Blazored.FluentValidation
-@using OnTest.Blazor.Transport.Auth
-@using OnTest.Blazor.Pages.Auth
 @using OnTest.Blazor.Settings
+@using OnTest.Blazor.Pages.Auth
 @using OnTest.Blazor.Services.Auth
-@using OnTest.Blazor.Services.Interceptors
+@using OnTest.Blazor.Transport.Auth
 @using OnTest.Blazor.Authentication
-@using OnTest.Blazor.Shared.Components
 @using OnTest.Blazor.Shared.Dialogs
-@using Microsoft.Extensions.Configuration
-@using Microsoft.Extensions.Options
+@using OnTest.Blazor.Services.Account
+@using OnTest.Blazor.Shared.Components
 
 @attribute [Authorize]
 @inject ISnackbar _snackBar
 @inject IAuthService _authService
-@inject IOptions<AppConfig> options
+@inject IOptions<AppConfig> _options
 @inject IDialogService _dialogService
+@inject IAccountService _accountService
 @inject NavigationManager _navigationManager
 @inject IAuthorizationService _authorizationService
-@inject IHttpInterceptorService _interceptorService
+@inject IHttpClientInterceptor _httpClientInterceptor
 @inject AuthenticationStateProvider _authenticationStateProvider

@@ -22,6 +22,13 @@ namespace OnTest.Blazor.Pages.Auth
             _model.Code = Code;
         }
 
+        protected override async Task OnInitializedAsync()
+        {
+            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            if (state.User.Identity.IsAuthenticated)
+                _navigationManager.NavigateTo("/");
+        }
+
         private async Task SubmitAsync()
         {
             var result = await _authService.ResetPasswordAsync(_model);

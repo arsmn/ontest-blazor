@@ -22,7 +22,7 @@ namespace OnTest.Blazor.Services.Auth
 
         public async Task<IResult> SigninAsync(SigninRequest request)
         {
-            var response = await _httpClient.PostAsJsonAsync("auth/signin", request);
+            var response = await _httpClient.PostAsJsonAsync("auth/signin", request, JsonExtensions.Options);
             var result = await response.ToResult();
             return result;
         }
@@ -36,28 +36,21 @@ namespace OnTest.Blazor.Services.Auth
 
         public async Task<IResult> SignupAsync(SignupRequest request)
         {
-            var response = await _httpClient.PostAsJsonAsync("auth/signup", request);
+            var response = await _httpClient.PostAsJsonAsync("auth/signup", request, JsonExtensions.Options);
             var result = await response.ToResult();
             return result;
         }
 
-        public async Task<IResult<User>> WhoamiAsync()
+        public async Task<IResult> SendResetPasswordAsync(SendResetPasswordRequest request)
         {
-            var response = await _httpClient.GetAsync("auth/whoami");
-            var result = await response.ToResult<User>();
-            return result;
-        }
-
-        public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request)
-        {
-            var response = await _httpClient.PostAsJsonAsync("auth/forgot-password", request);
+            var response = await _httpClient.PostAsJsonAsync("auth/send/reset-password", request, JsonExtensions.Options);
             var result = await response.ToResult();
             return result;
         }
 
         public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
         {
-            var response = await _httpClient.PostAsJsonAsync("auth/reset-password", request);
+            var response = await _httpClient.PostAsJsonAsync("auth/reset-password", request, JsonExtensions.Options);
             var result = await response.ToResult();
             return result;
         }

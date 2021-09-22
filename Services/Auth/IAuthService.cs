@@ -11,8 +11,7 @@ namespace OnTest.Blazor.Services.Auth
         Task<IResult> SigninAsync(SigninRequest request);
         Task<IResult> SignupAsync(SignupRequest request);
         Task<IResult> SignoutAsync();
-        Task<IResult<User>> WhoamiAsync();
-        Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request);
+        Task<IResult> SendResetPasswordAsync(SendResetPasswordRequest request);
         Task<IResult> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }

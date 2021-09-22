@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using LazyCache;
 using Microsoft.AspNetCore.Components.Authorization;
+using OnTest.Blazor.Services.Account;
 using OnTest.Blazor.Services.Auth;
 using OnTest.Blazor.Transport.Auth;
 
@@ -16,18 +17,18 @@ namespace OnTest.Blazor.Authentication
     {
         private const string CacheKey = "Auth-State";
         private readonly IAppCache _appCache;
-        private readonly IAuthService _authService;
+        private readonly IAccountService _accountService;
 
         public HostStateProvider(
             IAppCache appCache,
-            IAuthService authService
+            IAccountService accountService
         )
         {
             _appCache = appCache ??
                 throw new ArgumentNullException(nameof(appCache));
 
-            _authService = authService ??
-                throw new ArgumentNullException(nameof(authService));
+            _accountService = accountService ??
+                throw new ArgumentNullException(nameof(accountService));
         }
 
         public async Task StateChangedNotifyAsync()
@@ -47,16 +48,16 @@ namespace OnTest.Blazor.Authentication
 
         private async Task<ClaimsPrincipal> FetchSignedInUser()
         {
-            var result = await _authService.WhoamiAsync();
+            var result = await _accountService.WhoamiAsync();
             if (result.Succeeded)
             {
                 var claims = new Claim[]
                 {
                     new Claim(ClaimTypes.Email, result.Data.Email ?? ""),
-                    new Claim(ClaimTypes.Name, result.Data.FirstName ?? ""),
+                    new Claim(ClaimTypes.Name, result.Data.Username ?? ""),
                     new Claim(ClaimTypes.Surname, result.Data.LastName ?? ""),
-                    new Claim(ClaimTypes.GivenName, result.Data.FullName ?? ""),
-                    new Claim(ClaimTypes.NameIdentifier, result.Data.Username ?? "")
+                    new Claim(ClaimTypes.GivenName, result.Data.FirstName ?? ""),
+                    new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString() ?? "")
                 };
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "cookie"));
             }

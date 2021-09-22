@@ -3,9 +3,9 @@ using OnTest.Blazor.Transport.Auth;
 
 namespace OnTest.Blazor.Validators.Auth
 {
-    public class ForgotPasswordRequestValidator : AbstractValidator<ForgotPasswordRequest>
+    public class SendResetPasswordRequestValidator : AbstractValidator<SendResetPasswordRequest>
     {
-        public ForgotPasswordRequestValidator()
+        public SendResetPasswordRequestValidator()
         {
             RuleFor(request => request.Email)
                 .NotEmpty().WithMessage("{PropertyName} is required")

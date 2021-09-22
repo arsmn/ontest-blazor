@@ -11,7 +11,7 @@ namespace OnTest.Blazor.Shared.Components
         [Parameter] public string Class { get; set; }
         [Parameter] public string ImageUrl { get; set; }
 
-        private string Id { get; set; }
+        private long Id { get; set; }
         private string FirstName { get; set; }
         private string LastName { get; set; }
         private string Email { get; set; }
@@ -44,7 +44,6 @@ namespace OnTest.Blazor.Shared.Components
                 { nameof(Dialogs.Signout.ContentText), "Are you sure you want to logout now?" },
                 { nameof(Dialogs.Signout.ButtonText), "Signout" },
                 { nameof(Dialogs.Signout.Color), Color.Error },
-                { nameof(Dialogs.Signout.CurrentUserId), this.Id }
             };
 
             var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
