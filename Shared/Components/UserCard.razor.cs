@@ -7,20 +7,19 @@ namespace OnTest.Blazor.Shared.Components
 {
     public partial class UserCard
     {
-        [Parameter] public UserCardMode Mode { get; set; } = UserCardMode.Card;
+        [Parameter] public UserCardMode Mode { get; set; }
         [Parameter] public string Class { get; set; }
-        [Parameter] public string ImageUrl { get; set; }
 
         private long Id { get; set; }
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
         private string Email { get; set; }
+        private string Avatar { get; set; }
+        private string LastName { get; set; }
+        private string FirstName { get; set; }
         private char FirstLetterOfName { get; set; }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnInitializedAsync()
         {
-            if (firstRender)
-                await LoadDataAsync();
+            await LoadDataAsync();
         }
 
         private async Task LoadDataAsync()
@@ -30,11 +29,10 @@ namespace OnTest.Blazor.Shared.Components
 
             this.Id = user.GetId();
             this.Email = user.GetEmail();
-            this.FirstName = user.GetFirstName();
+            this.Avatar = user.GetAvatar();
             this.LastName = user.GetLastName();
+            this.FirstName = user.GetFirstName();
             this.FirstLetterOfName = this.FirstName.Length > 0 ? FirstName[0] : '-';
-
-            StateHasChanged();
         }
 
         private void Signout()

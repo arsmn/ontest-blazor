@@ -19,10 +19,10 @@ namespace OnTest.Blazor.Services.Account
                 throw new ArgumentNullException(nameof(httpClient));
         }
 
-        public async Task<IResult> UpdateProfileAsync(UpdateProfileRequest request)
+        public async Task<IResult<User>> UpdateProfileAsync(UpdateProfileRequest request)
         {
             var response = await _httpClient.PutAsJsonAsync("account", request, JsonExtensions.Options);
-            var result = await response.ToResult();
+            var result = await response.ToResult<User>();
             return result;
         }
 
@@ -75,6 +75,27 @@ namespace OnTest.Blazor.Services.Account
         {
             var response = await _httpClient.PostAsJsonAsync("account/verify", request, JsonExtensions.Options);
             var result = await response.ToResult();
+            return result;
+        }
+
+        public async Task<IResult<User>> SetAvatarAsync(MultipartFormDataContent content)
+        {
+            var response = await _httpClient.PostAsync("account/avatar", content);
+            var result = await response.ToResult<User>();
+            return result;
+        }
+
+        public async Task<IResult<User>> GenerateAvatarAsync()
+        {
+            var response = await _httpClient.PostAsync("account/avatar?gen=true", null);
+            var result = await response.ToResult<User>();
+            return result;
+        }
+
+        public async Task<IResult<User>> DeleteAvatarAsync()
+        {
+            var response = await _httpClient.DeleteAsync("account/avatar");
+            var result = await response.ToResult<User>();
             return result;
         }
     }

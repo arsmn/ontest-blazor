@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using LazyCache;
 using Microsoft.AspNetCore.Components.Authorization;
+using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Services.Account;
 using OnTest.Blazor.Services.Auth;
 using OnTest.Blazor.Transport.Auth;
@@ -57,7 +58,8 @@ namespace OnTest.Blazor.Authentication
                     new Claim(ClaimTypes.Name, result.Data.Username ?? ""),
                     new Claim(ClaimTypes.Surname, result.Data.LastName ?? ""),
                     new Claim(ClaimTypes.GivenName, result.Data.FirstName ?? ""),
-                    new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString() ?? "")
+                    new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString() ?? ""),
+                    new Claim(ClaimsPrincipalExtensions.ClaimTypeAvatar, result.Data.Avatar ?? "")
                 };
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "cookie"));
             }

@@ -1,7 +1,11 @@
 using System;
+using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Blazored.FluentValidation;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using OnTest.Blazor.Authentication;
 using OnTest.Blazor.Transport.Account;
@@ -9,19 +13,16 @@ using Toolbelt.Blazor;
 
 namespace OnTest.Blazor.Pages.Account
 {
-    public partial class Profile : IDisposable
+    public partial class Profile
     {
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private readonly UpdateProfileRequest _model = new();
 
-        private string _avatar;
         private char _firstLetterOfName;
 
         protected override async Task OnInitializedAsync()
         {
-            _httpClientInterceptor.BeforeSend += InterceptorBeforeSend;
-            _httpClientInterceptor.AfterSend += InterceptorAfterSend;
             await LoadDataAsync();
         }
 
@@ -40,11 +41,13 @@ namespace OnTest.Blazor.Pages.Account
             _model.FirstName = user.FirstName;
             _model.LastName = user.LastName;
             _model.Username = user.Username;
-            _avatar = user.Avatar;
             _firstLetterOfName = _model.FirstName.Length > 0 ? _model.FirstName[0] : '-';
             _emailVerified = user.EmailVerified;
             _emailVerifyIcon = user.EmailVerified ? Icons.Material.Filled.Check : Icons.Material.Filled.Warning;
             _emailVerifyColor = user.EmailVerified ? Color.Success : Color.Warning;
+
+            _userAvatar = user.Avatar;
+            _cardAvatar = user.Avatar;
         }
 
         private async Task SubmitAsync()
@@ -64,6 +67,7 @@ namespace OnTest.Blazor.Pages.Account
         private bool _emailVerified;
         private string _emailVerifyIcon;
         private Color _emailVerifyColor;
+
         private async Task SendEmailVerification()
         {
             if (_emailVerified)
@@ -96,40 +100,94 @@ namespace OnTest.Blazor.Pages.Account
             }
         }
 
-        private string _checkUsernameIcon;
-        private Color _checkUsernameColor;
+        private string _tmpAvatar;
+        private string _userAvatar;
+        private string _cardAvatar;
+        private IBrowserFile _avatarFile;
 
-        private void InterceptorBeforeSend(object sender, HttpClientInterceptorEventArgs e)
+        private async Task SelectAvatar(InputFileChangeEventArgs args)
         {
-            if (e.Request.RequestUri.ToString().Contains("check-username"))
+            if (args.FileCount == 0)
             {
-                _checkUsernameIcon = Icons.Material.Filled.Sync;
-                _checkUsernameColor = Color.Dark;
+                _snackBar.Add("Please select an image", Severity.Warning);
+                return;
+            }
+
+            _avatarFile = args.File;
+            byte[] buffer = new byte[_avatarFile.Size];
+            await _avatarFile.OpenReadStream(10485760).ReadAsync(buffer);
+            _tmpAvatar = $"data:{_avatarFile.ContentType};base64,{Convert.ToBase64String(buffer)}";
+            _cardAvatar = _tmpAvatar;
+        }
+
+        private async Task UploadAvatar()
+        {
+            if (_avatarFile is null)
+            {
+                _snackBar.Add("Please select an image", Severity.Warning);
+                return;
+            }
+
+            using var content = new MultipartFormDataContent();
+            var fileContent = new StreamContent(_avatarFile.OpenReadStream(10485760));
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(_avatarFile.ContentType);
+            content.Add(
+                content: fileContent,
+                name: "\"file\"",
+                fileName: _avatarFile.Name);
+            var result = await _accountService.SetAvatarAsync(content);
+            if (result.Succeeded)
+            {
+                _userAvatar = _tmpAvatar;
+                _tmpAvatar = string.Empty;
+                _snackBar.Add("Avatar changed!", Severity.Success);
+            }
+            else
+            {
+                _snackBar.Add(result.Error.Message, Severity.Error);
             }
         }
 
-        private void InterceptorAfterSend(object sender, HttpClientInterceptorEventArgs e)
+        private async Task GenerateAvatar()
         {
-            if (e.Request.RequestUri.ToString().Contains("check-username"))
+            var result = await _accountService.GenerateAvatarAsync();
+            if (result.Succeeded)
             {
-                switch (e.Response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                        _checkUsernameIcon = Icons.Material.Filled.Check;
-                        _checkUsernameColor = Color.Success;
-                        break;
-                    case HttpStatusCode.Conflict:
-                        _checkUsernameIcon = Icons.Material.Filled.Warning;
-                        _checkUsernameColor = Color.Error;
-                        break;
-                }
+                _tmpAvatar = string.Empty;
+
+                // change hash to reload image
+                string avatar = $"{result.Data.Avatar}?hash={Guid.NewGuid().ToString()}";
+                _cardAvatar = avatar;
+                _userAvatar = avatar;
+                _snackBar.Add("Avatar changed!", Severity.Success);
+                StateHasChanged();
+            }
+            else
+            {
+                _snackBar.Add(result.Error.Message, Severity.Error);
             }
         }
 
-        public void Dispose()
+        private async Task DeleteAvatar()
         {
-            _httpClientInterceptor.BeforeSend -= InterceptorBeforeSend;
-            _httpClientInterceptor.AfterSend -= InterceptorAfterSend;
+            var result = await _accountService.DeleteAvatarAsync();
+            if (result.Succeeded)
+            {
+                _tmpAvatar = string.Empty;
+                _userAvatar = string.Empty;
+                _cardAvatar = string.Empty;
+                _snackBar.Add("Avatar deleted!", Severity.Success);
+            }
+            else
+            {
+                _snackBar.Add(result.Error.Message, Severity.Error);
+            }
+        }
+
+        private void ClearAvatar()
+        {
+            _tmpAvatar = string.Empty;
+            _cardAvatar = _userAvatar;
         }
     }
 }

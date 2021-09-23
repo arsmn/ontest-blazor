@@ -5,13 +5,13 @@
     <MudCard Elevation="0" Square="true" Class="@Class">
         <MudCardHeader>
             <CardHeaderAvatar>
-                @if (string.IsNullOrEmpty(ImageUrl))
+                @if (string.IsNullOrEmpty(Avatar))
                 {
                     <MudAvatar Color="Color.Secondary">@FirstLetterOfName</MudAvatar>
                 }
                 else
                 {
-                    <MudAvatar Image="@ImageUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                    <MudAvatar Image="@Avatar" Style="height:50px; width:50px;"> </MudAvatar>
                 }
             </CardHeaderAvatar>
             <CardHeaderContent>
@@ -21,17 +21,17 @@
         </MudCardHeader>
     </MudCard>
 }
-else
+else if (Mode == UserCardMode.Menu)
 {
     <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
         <ActivatorContent>
-            @if (string.IsNullOrEmpty(ImageUrl))
+            @if (string.IsNullOrEmpty(Avatar))
             {
                 <MudAvatar Color="Color.Secondary">@FirstLetterOfName</MudAvatar>
             }
             else
             {
-                <MudAvatar Image="@ImageUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                <MudAvatar Image="@Avatar" Style="height:50px; width:50px;"> </MudAvatar>
             }
         </ActivatorContent>
         <ChildContent>

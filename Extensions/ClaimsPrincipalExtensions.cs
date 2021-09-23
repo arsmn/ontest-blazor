@@ -4,6 +4,8 @@ namespace OnTest.Blazor.Extensions
 {
     internal static class ClaimsPrincipalExtensions
     {
+        internal const string ClaimTypeAvatar = "claims.avatar";
+
         internal static long GetId(this ClaimsPrincipal claimsPrincipal)
             => long.Parse(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -18,5 +20,8 @@ namespace OnTest.Blazor.Extensions
 
         internal static string GetLastName(this ClaimsPrincipal claimsPrincipal)
             => claimsPrincipal.FindFirstValue(ClaimTypes.Surname);
+
+        internal static string GetAvatar(this ClaimsPrincipal claimsPrincipal)
+            => claimsPrincipal.FindFirstValue(ClaimTypeAvatar);
     }
 }
