@@ -3,12 +3,19 @@
 <MudGrid>
     <MudItem xs="12" sm="4" md="3">
         <MudCard Elevation="25">
+            @if (_avatarProcessing)
+            {
+                <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+            }
             <MudCardHeader>
                 <CardHeaderContent>
                     <MudText Typo="Typo.body1">Avatar</MudText>
                 </CardHeaderContent>
                 <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.Shuffle" Color="Color.Default" OnClick="GenerateAvatar" />
+                    <MudTooltip Text="Generate" Placement="Placement.Bottom">
+                        <MudIconButton Icon="@Icons.Material.Filled.Shuffle" Color="Color.Default"
+                            OnClick="GenerateAvatar" Disabled="@(_avatarProcessing)" />
+                    </MudTooltip>
                 </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent>
@@ -28,30 +35,30 @@
             </MudCardContent>
             <MudCardActions Class="d-flex justify-center">
                 <InputFile id="fileInput" OnChange="SelectAvatar" accept=".jpg, .jpeg, .png" hidden />
-                <MudButton HtmlTag="label" Variant="Variant.Text" Color="Color.Primary" Size="Size.Small"
-                    StartIcon="@Icons.Filled.Image" for="fileInput">
-                    Select
-                </MudButton>
+                <MudTooltip Text="Select" Placement="Placement.Bottom">
+                    <MudIconButton HtmlTag="label" Color="Color.Primary" Icon="@Icons.Filled.Image" for="fileInput"
+                        Disabled="@(_avatarProcessing)" />
+                </MudTooltip>
                 @if (!string.IsNullOrEmpty(_tmpAvatar))
                 {
-                    <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.Filled.CloudUpload"
-                    Size="Size.Small" OnClick="UploadAvatar">
-                        Upload
-                    </MudButton>
+                    <MudTooltip Text="Upload" Placement="Placement.Bottom">
+                        <MudIconButton Color="Color.Success" Icon="@Icons.Filled.CloudUpload" OnClick="UploadAvatar"
+                        Disabled="@(_avatarProcessing)" />
+                    </MudTooltip>
                 }
                 @if (string.IsNullOrEmpty(_tmpAvatar) && !string.IsNullOrEmpty(_userAvatar))
                 {
-                    <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Small"
-                    OnClick="DeleteAvatar">
-                        Delete
-                    </MudButton>
+                    <MudTooltip Text="Delete" Placement="Placement.Bottom">
+                        <MudIconButton Color="Color.Error" Icon="@Icons.Filled.Delete" OnClick="DeleteAvatar"
+                        Disabled="@(_avatarProcessing)" />
+                    </MudTooltip>
                 }
                 @if (!string.IsNullOrEmpty(_tmpAvatar))
                 {
-                    <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Filled.Cancel"
-                    Size="Size.Small" OnClick="ClearAvatar">
-                        Cancel
-                    </MudButton>
+                    <MudTooltip Text="Cancel" Placement="Placement.Bottom">
+                        <MudIconButton Color="Color.Warning" Icon="@Icons.Filled.Cancel" OnClick="ClearAvatar"
+                        Disabled="@(_avatarProcessing)" />
+                    </MudTooltip>
                 }
             </MudCardActions>
         </MudCard>
@@ -60,6 +67,10 @@
         <EditForm Model="@_model" OnValidSubmit="SubmitAsync">
             <FluentValidationValidator @ref="_fluentValidationValidator" />
             <MudCard Elevation="25">
+                @if (_processing)
+                {
+                    <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+                }
                 <MudCardHeader>
                     <CardHeaderContent>
                         <MudText>Profile Details</MudText>
@@ -88,8 +99,9 @@
                     </MudGrid>
                 </MudCardContent>
                 <MudCardActions Class="pb-4 pl-4">
-                    <MudButton Variant="Variant.Filled" Disabled="@(!Validated)" Color="Color.Primary" Class="ml-auto"
-                        ButtonType="ButtonType.Submit">Save Changes</MudButton>
+                    <MudButton Variant="Variant.Filled" Disabled="@(!Validated || _processing)" Color="Color.Primary"
+                        Class="ml-auto" ButtonType="ButtonType.Submit">
+                        Save changes</MudButton>
                 </MudCardActions>
             </MudCard>
         </EditForm>

@@ -1,10 +1,14 @@
 @attribute [Authorize]
 
-@if (PasswordSet)
+@if (_passwordSet)
 {
     <EditForm Model="@_changeModel" OnValidSubmit="SubmitChangePasswordAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <MudCard Elevation="25">
+                        @if (_processing)
+                {
+                    <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+                }
         <MudCardHeader>
             <CardHeaderContent>
                 <MudText>Change Password</MudText>
@@ -39,7 +43,7 @@
             </MudGrid>
         </MudCardContent>
         <MudCardActions Class="pb-4 pl-4">
-            <MudButton Variant="Variant.Filled" Disabled="@(!Validated)" Color="Color.Primary"
+            <MudButton Variant="Variant.Filled" Disabled="@(!Validated || _processing)" Color="Color.Primary"
                 ButtonType="ButtonType.Submit" Class="ml-auto">Change Password</MudButton>
         </MudCardActions>
     </MudCard>
@@ -50,6 +54,10 @@ else
     <EditForm Model="@_setModel" OnValidSubmit="SubmitSetPasswordAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <MudCard Elevation="25">
+                        @if (_processing)
+                {
+                    <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+                }
         <MudCardHeader>
             <CardHeaderContent>
                 <MudText>Set Password</MudText>
@@ -76,7 +84,7 @@ else
             </MudGrid>
         </MudCardContent>
         <MudCardActions Class="pb-4 pl-4">
-            <MudButton Variant="Variant.Filled" Disabled="@(!Validated)" Color="Color.Primary"
+            <MudButton Variant="Variant.Filled" Disabled="@(!Validated || _processing)" Color="Color.Primary"
                 ButtonType="ButtonType.Submit" Class="ml-auto">Set Password</MudButton>
         </MudCardActions>
     </MudCard>

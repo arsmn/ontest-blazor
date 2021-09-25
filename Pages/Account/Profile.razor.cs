@@ -19,6 +19,7 @@ namespace OnTest.Blazor.Pages.Account
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private readonly UpdateProfileRequest _model = new();
 
+        private bool _processing;
         private char _firstLetterOfName;
 
         protected override async Task OnInitializedAsync()
@@ -52,6 +53,7 @@ namespace OnTest.Blazor.Pages.Account
 
         private async Task SubmitAsync()
         {
+            _processing = true;
             var result = await _accountService.UpdateProfileAsync(_model);
             if (result.Succeeded)
             {
@@ -62,6 +64,7 @@ namespace OnTest.Blazor.Pages.Account
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _processing = false;
         }
 
         private bool _emailVerified;
@@ -103,6 +106,7 @@ namespace OnTest.Blazor.Pages.Account
         private string _tmpAvatar;
         private string _userAvatar;
         private string _cardAvatar;
+        private bool _avatarProcessing;
         private IBrowserFile _avatarFile;
 
         private async Task SelectAvatar(InputFileChangeEventArgs args)
@@ -128,6 +132,8 @@ namespace OnTest.Blazor.Pages.Account
                 return;
             }
 
+            _avatarProcessing = true;
+
             using var content = new MultipartFormDataContent();
             var fileContent = new StreamContent(_avatarFile.OpenReadStream(10485760));
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(_avatarFile.ContentType);
@@ -146,10 +152,12 @@ namespace OnTest.Blazor.Pages.Account
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _avatarProcessing = false;
         }
 
         private async Task GenerateAvatar()
         {
+            _avatarProcessing = true;
             var result = await _accountService.GenerateAvatarAsync();
             if (result.Succeeded)
             {
@@ -166,10 +174,12 @@ namespace OnTest.Blazor.Pages.Account
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _avatarProcessing = false;
         }
 
         private async Task DeleteAvatar()
         {
+            _avatarProcessing = true;
             var result = await _accountService.DeleteAvatarAsync();
             if (result.Succeeded)
             {
@@ -182,6 +192,7 @@ namespace OnTest.Blazor.Pages.Account
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _avatarProcessing = false;
         }
 
         private void ClearAvatar()

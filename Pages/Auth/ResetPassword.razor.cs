@@ -14,6 +14,8 @@ namespace OnTest.Blazor.Pages.Auth
 
         [Parameter] public string Code { get; set; }
 
+        private bool _processing;
+
         protected override void OnParametersSet()
         {
             if (Code.Length <= 30)
@@ -31,6 +33,7 @@ namespace OnTest.Blazor.Pages.Auth
 
         private async Task SubmitAsync()
         {
+            _processing = true;
             var result = await _authService.ResetPasswordAsync(_model);
             if (result.Succeeded)
             {
@@ -41,6 +44,7 @@ namespace OnTest.Blazor.Pages.Auth
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _processing = false;
         }
 
 

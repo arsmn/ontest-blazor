@@ -10,6 +10,7 @@ namespace OnTest.Blazor.Pages.Auth
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private readonly SendResetPasswordRequest _model = new();
+        private bool _processing;
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,6 +21,7 @@ namespace OnTest.Blazor.Pages.Auth
 
         private async Task SubmitAsync()
         {
+            _processing = true;
             var result = await _authService.SendResetPasswordAsync(_model);
             if (result.Succeeded)
             {
@@ -30,6 +32,7 @@ namespace OnTest.Blazor.Pages.Auth
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _processing = false;
         }
     }
 }

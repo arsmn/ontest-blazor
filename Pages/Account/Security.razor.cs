@@ -11,19 +11,22 @@ namespace OnTest.Blazor.Pages.Account
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private readonly ChangePasswordRequest _changeModel = new();
         private readonly SetPasswordRequest _setModel = new();
-        private bool PasswordSet = true;
+
+        private bool _passwordSet = true;
+        private bool _processing;
 
         protected override async Task OnInitializedAsync()
         {
             var result = await _accountService.WhoamiAsync();
             if (result.Succeeded)
-                PasswordSet = result.Data.PasswordSet;
+                _passwordSet = result.Data.PasswordSet;
             else
                 _snackBar.Add(result.Error.Message, MudBlazor.Severity.Error);
         }
 
         private async Task SubmitChangePasswordAsync()
         {
+            _processing = true;
             var result = await _accountService.ChangePasswordAsync(_changeModel);
             if (result.Succeeded)
             {
@@ -37,14 +40,16 @@ namespace OnTest.Blazor.Pages.Account
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _processing = false;
         }
 
         private async Task SubmitSetPasswordAsync()
         {
+            _processing = true;
             var result = await _accountService.SetPasswordAsync(_setModel);
             if (result.Succeeded)
             {
-                PasswordSet = true;
+                _passwordSet = true;
                 _setModel.Password = "";
                 _setModel.ConfirmPassword = "";
                 _snackBar.Add("Password Set!", Severity.Success);
@@ -53,6 +58,7 @@ namespace OnTest.Blazor.Pages.Account
             {
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
+            _processing = false;
         }
 
         private bool _currentPasswordVisibility;
