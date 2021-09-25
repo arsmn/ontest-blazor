@@ -15,14 +15,14 @@
         <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">Confirm</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public string Title { get; set; }
     [Parameter] public string Content { get; set; }
     [Parameter] public string Icon { get; set; }
     [Parameter] public Color Color { get; set; }
 
-    void Cancel() => MudDialog.Cancel();
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    private void Cancel() => MudDialog.Cancel();
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
 }

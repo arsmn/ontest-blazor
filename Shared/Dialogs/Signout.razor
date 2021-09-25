@@ -18,11 +18,8 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public string ContentText { get; set; }
-
     [Parameter] public string ButtonText { get; set; }
-
     [Parameter] public Color Color { get; set; }
 
     private async Task Submit()
@@ -31,7 +28,7 @@
         if (result.Succeeded)
         {
             await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
-            _navigationManager.NavigateTo("/signin");
+            _navigationManager.NavigateTo("/signin", true);
         }
         else
         {
@@ -41,5 +38,5 @@
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    void Cancel() => MudDialog.Cancel();
+    private void Cancel() => MudDialog.Cancel();
 }

@@ -58,9 +58,12 @@ namespace OnTest.Blazor.Authentication
                     new Claim(ClaimTypes.Name, result.Data.Username ?? ""),
                     new Claim(ClaimTypes.Surname, result.Data.LastName ?? ""),
                     new Claim(ClaimTypes.GivenName, result.Data.FirstName ?? ""),
-                    new Claim(ClaimsPrincipalExtensions.ClaimTypePreference+"theme", "default"),
                     new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString() ?? ""),
-                    new Claim(ClaimsPrincipalExtensions.ClaimTypeAvatar, result.Data.Avatar ?? "")
+                    new Claim(ClaimsPrincipalExtensions.ClaimTypeAvatar, result.Data.Avatar ?? ""),
+                    new Claim(ClaimsPrincipalExtensions.ClaimTypeFullName, result.Data.FullName ?? ""),
+                    new Claim(ClaimsPrincipalExtensions.ClaimTypePreferenceTheme, result.Data.PreferenceTheme),
+                    new Claim(ClaimsPrincipalExtensions.ClaimTypePasswordSet, result.Data.PasswordSet.ToString()),
+                    new Claim(ClaimsPrincipalExtensions.ClaimTypeEmailVerified, result.Data.EmailVerified.ToString())
                 };
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "cookie"));
             }

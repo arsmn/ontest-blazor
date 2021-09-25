@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using OnTest.Blazor.Authentication;
 using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Settings;
 using OnTest.Blazor.Transport.Shared.Wrapper;
@@ -30,21 +31,24 @@ namespace OnTest.Blazor.Services.Preference
 
         public async Task<MudTheme> GetCurrentThemeAsync()
         {
-            return Theme.Parse(await GetPreferenceAsync("theme"));
+            string theme = await GetPreferenceAsync(ClaimsPrincipalExtensions.ClaimTypePreferenceTheme);
+            Console.WriteLine($"THEME: {theme}");
+            return Theme.Parse(theme);
         }
 
         public async Task<MudTheme> ToggleThemeAsync()
         {
-            string current = await GetPreferenceAsync("theme");
+            string current = await GetPreferenceAsync(ClaimsPrincipalExtensions.ClaimTypePreferenceTheme);
             string theme = Theme.Rotate(current);
             await SetPreferenceAsync(new("theme", theme));
+            await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
             return Theme.Parse(theme);
         }
 
         public async Task<string> GetPreferenceAsync(string key)
         {
             var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            return state.User.GetPreference(key);
+            return state.User.GetStringValue(key);
         }
 
         public async Task<IResult> SetPreferenceAsync(KeyValuePair<string, string> request)

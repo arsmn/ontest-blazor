@@ -9,19 +9,22 @@ namespace OnTest.Blazor.Shared
     public partial class MainBody
     {
         [Parameter] public RenderFragment ChildContent { get; set; }
-        [Parameter] public EventCallback OnToggleTheme { get; set; }
+        // [Parameter] public EventCallback OnToggleTheme { get; set; }
 
+        private MudTheme _currentTheme;
         private bool _drawerOpen = true;
 
         protected override async Task OnInitializedAsync()
         {
+            Console.WriteLine("OnInitializedAsync");
+            _currentTheme = await _preferenceService.GetCurrentThemeAsync();
             var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            _snackBar.Add($"Welcome {state.User.GetFirstName()} {state.User.GetLastName()}", Severity.Success);
+            _snackBar.Add($"Welcome {state.User.GetFullName()}", Severity.Success);
         }
 
-        public async Task ToggleTheme()
+        private async Task ToggleTheme()
         {
-            await OnToggleTheme.InvokeAsync();
+            _currentTheme = await _preferenceService.ToggleThemeAsync();
         }
 
         private void ToggleDrawer()

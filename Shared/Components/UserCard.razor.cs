@@ -39,8 +39,8 @@ namespace OnTest.Blazor.Shared.Components
         {
             var parameters = new DialogParameters
             {
-                { nameof(Dialogs.Signout.ContentText), "Are you sure you want to logout now?" },
-                { nameof(Dialogs.Signout.ButtonText), "Signout" },
+                { nameof(Dialogs.Signout.ContentText), "Are you sure you want to signout now?" },
+                { nameof(Dialogs.Signout.ButtonText), "Sign Out" },
                 { nameof(Dialogs.Signout.Color), Color.Error },
             };
 

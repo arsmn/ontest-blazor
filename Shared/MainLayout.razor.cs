@@ -7,16 +7,16 @@ namespace OnTest.Blazor.Shared
 {
     public partial class MainLayout
     {
-        private MudTheme _currentTheme;
+        // private MudTheme _currentTheme;
 
-        protected override async Task OnInitializedAsync()
-        {
-            _currentTheme = await _preferenceService.GetCurrentThemeAsync();
-        }
+        // protected override async Task OnInitializedAsync()
+        // {
+        //     _currentTheme = await _preferenceService.GetCurrentThemeAsync();
+        // }
 
-        private async Task ToggleTheme()
-        {
-            _currentTheme = await _preferenceService.ToggleThemeAsync();
-        }
+        // private async Task ToggleTheme()
+        // {
+        //     _currentTheme = await _preferenceService.ToggleThemeAsync();
+        // }
     }
 }

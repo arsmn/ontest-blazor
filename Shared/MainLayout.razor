@@ -1,14 +1,13 @@
 @inherits LayoutComponentBase
 
 <MudRTLProvider>
-    <MudThemeProvider Theme="_currentTheme" />
+    <MudThemeProvider Theme="Theme.Default" />
     <MudDialogProvider />
     <MudSnackbarProvider />
     <AuthorizeView>
         <NotAuthorized>
             <MudAppBar Elevation="4" Color="Color.Primary">
                 <MudSpacer />
-                    <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => ToggleTheme())" />
             </MudAppBar>
 
             <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100vh;">
@@ -17,7 +16,7 @@
         </NotAuthorized>
         <Authorized>
             <MudLayout>
-                <MainBody OnToggleTheme="@ToggleTheme">
+                <MainBody>
                     @Body
                 </MainBody>
             </MudLayout>

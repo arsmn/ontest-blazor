@@ -8,6 +8,7 @@ using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using OnTest.Blazor.Authentication;
+using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Transport.Account;
 using Toolbelt.Blazor;
 
@@ -29,24 +30,19 @@ namespace OnTest.Blazor.Pages.Account
 
         private async Task LoadDataAsync()
         {
-            var result = await _accountService.WhoamiAsync();
-            if (!result.Succeeded)
-            {
-                _snackBar.Add(result.Error.Message, MudBlazor.Severity.Error);
-                return;
-            }
+            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = state.User.GetUser();
 
-            var user = result.Data;
             _model.Id = user.Id;
             _model.Email = user.Email;
             _model.FirstName = user.FirstName;
             _model.LastName = user.LastName;
             _model.Username = user.Username;
+
             _firstLetterOfName = _model.FirstName.Length > 0 ? _model.FirstName[0] : '-';
             _emailVerified = user.EmailVerified;
             _emailVerifyIcon = user.EmailVerified ? Icons.Material.Filled.Check : Icons.Material.Filled.Warning;
             _emailVerifyColor = user.EmailVerified ? Color.Success : Color.Warning;
-
             _userAvatar = user.Avatar;
             _cardAvatar = user.Avatar;
         }

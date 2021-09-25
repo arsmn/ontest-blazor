@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using Blazored.FluentValidation;
 using MudBlazor;
+using OnTest.Blazor.Authentication;
+using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Transport.Account;
 
 namespace OnTest.Blazor.Pages.Account
@@ -17,11 +19,8 @@ namespace OnTest.Blazor.Pages.Account
 
         protected override async Task OnInitializedAsync()
         {
-            var result = await _accountService.WhoamiAsync();
-            if (result.Succeeded)
-                _passwordSet = result.Data.PasswordSet;
-            else
-                _snackBar.Add(result.Error.Message, MudBlazor.Severity.Error);
+            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            _passwordSet = state.User.GetPasswordSet();
         }
 
         private async Task SubmitChangePasswordAsync()
@@ -53,6 +52,7 @@ namespace OnTest.Blazor.Pages.Account
                 _setModel.Password = "";
                 _setModel.ConfirmPassword = "";
                 _snackBar.Add("Password Set!", Severity.Success);
+                await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
             }
             else
             {
