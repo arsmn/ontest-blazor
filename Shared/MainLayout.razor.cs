@@ -11,17 +11,12 @@ namespace OnTest.Blazor.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            _currentTheme = Theme.Default;
-            // _currentTheme = await _clientPreferenceManager.GetCurrentThemeAsync();
-            // _rightToLeft = await _clientPreferenceManager.IsRTL();
+            _currentTheme = await _preferenceService.GetCurrentThemeAsync();
         }
 
-        private async Task DarkMode()
+        private async Task ToggleTheme()
         {
-            // bool isDarkMode = await _clientPreferenceManager.ToggleDarkModeAsync();
-            // _currentTheme = isDarkMode
-            //     ? BlazorHeroTheme.DefaultTheme
-            //     : BlazorHeroTheme.DarkTheme;
+            _currentTheme = await _preferenceService.ToggleThemeAsync();
         }
     }
 }

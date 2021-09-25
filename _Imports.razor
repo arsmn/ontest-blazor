@@ -28,6 +28,7 @@
 @using OnTest.Blazor.Shared.Dialogs
 @using OnTest.Blazor.Services.Account
 @using OnTest.Blazor.Shared.Components
+@using OnTest.Blazor.Services.Preference
 
 @attribute [Authorize]
 @inject ISnackbar _snackBar
@@ -36,6 +37,7 @@
 @inject IDialogService _dialogService
 @inject IAccountService _accountService
 @inject NavigationManager _navigationManager
+@inject IPreferenceService _preferenceService
 @inject IAuthorizationService _authorizationService
 @inject IHttpClientInterceptor _httpClientInterceptor
 @inject AuthenticationStateProvider _authenticationStateProvider

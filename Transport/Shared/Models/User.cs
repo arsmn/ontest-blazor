@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace OnTest.Blazor.Transport.Shared.Models
@@ -13,5 +14,6 @@ namespace OnTest.Blazor.Transport.Shared.Models
         public bool EmailVerified { get; set; }
         public bool PasswordSet { get; set; }
         public string FullName { get; set; }
+        public IDictionary<string, string> Preferences { get; set; }
     }
 }
