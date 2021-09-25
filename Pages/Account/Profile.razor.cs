@@ -5,46 +5,44 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Blazored.FluentValidation;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using OnTest.Blazor.Authentication;
 using OnTest.Blazor.Extensions;
+using OnTest.Blazor.Shared.State;
 using OnTest.Blazor.Transport.Account;
-using Toolbelt.Blazor;
 
 namespace OnTest.Blazor.Pages.Account
 {
     public partial class Profile
     {
+        [Inject] public UserState UserState { get; set; }
+
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private readonly UpdateProfileRequest _model = new();
 
         private bool _processing;
-        private char _firstLetterOfName;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await LoadDataAsync();
+            LoadData();
         }
 
-        private async Task LoadDataAsync()
+        private void LoadData()
         {
-            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var user = state.User.GetUser();
+            _model.Id = UserState.Id;
+            _model.Email = UserState.Email;
+            _model.FirstName = UserState.FirstName;
+            _model.LastName = UserState.LastName;
+            _model.Username = UserState.Username;
 
-            _model.Id = user.Id;
-            _model.Email = user.Email;
-            _model.FirstName = user.FirstName;
-            _model.LastName = user.LastName;
-            _model.Username = user.Username;
-
-            _firstLetterOfName = _model.FirstName.Length > 0 ? _model.FirstName[0] : '-';
-            _emailVerified = user.EmailVerified;
-            _emailVerifyIcon = user.EmailVerified ? Icons.Material.Filled.Check : Icons.Material.Filled.Warning;
-            _emailVerifyColor = user.EmailVerified ? Color.Success : Color.Warning;
-            _userAvatar = user.Avatar;
-            _cardAvatar = user.Avatar;
+            _emailVerified = UserState.EmailVerified;
+            _emailVerifyIcon = UserState.EmailVerified ? Icons.Material.Filled.Check : Icons.Material.Filled.Warning;
+            _emailVerifyColor = UserState.EmailVerified ? Color.Success : Color.Warning;
+            _userAvatar = !string.IsNullOrEmpty(UserState.Avatar) ? $"{UserState.Avatar}?hash={Guid.NewGuid().ToString()}" : "";
+            _cardAvatar = !string.IsNullOrEmpty(UserState.Avatar) ? $"{UserState.Avatar}?hash={Guid.NewGuid().ToString()}" : "";
         }
 
         private async Task SubmitAsync()
@@ -53,8 +51,10 @@ namespace OnTest.Blazor.Pages.Account
             var result = await _accountService.UpdateProfileAsync(_model);
             if (result.Succeeded)
             {
+                UserState.FirstName = _model.FirstName;
+                UserState.LastName = _model.LastName;
+                UserState.Username = _model.Username;
                 _snackBar.Add("Your profile updated", Severity.Success);
-                await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
             }
             else
             {
@@ -141,7 +141,9 @@ namespace OnTest.Blazor.Pages.Account
             if (result.Succeeded)
             {
                 _userAvatar = _tmpAvatar;
+                _cardAvatar = _tmpAvatar;
                 _tmpAvatar = string.Empty;
+                UserState.Avatar = _userAvatar;
                 _snackBar.Add("Avatar changed!", Severity.Success);
             }
             else
@@ -163,8 +165,8 @@ namespace OnTest.Blazor.Pages.Account
                 string avatar = $"{result.Data.Avatar}?hash={Guid.NewGuid().ToString()}";
                 _cardAvatar = avatar;
                 _userAvatar = avatar;
+                UserState.Avatar = avatar;
                 _snackBar.Add("Avatar changed!", Severity.Success);
-                StateHasChanged();
             }
             else
             {
@@ -182,6 +184,7 @@ namespace OnTest.Blazor.Pages.Account
                 _tmpAvatar = string.Empty;
                 _userAvatar = string.Empty;
                 _cardAvatar = string.Empty;
+                UserState.Avatar = _userAvatar;
                 _snackBar.Add("Avatar deleted!", Severity.Success);
             }
             else

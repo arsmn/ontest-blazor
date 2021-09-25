@@ -16,19 +16,17 @@
 
 @using Blazored.FluentValidation
 
-@using Toolbelt.Blazor
-
 @using OnTest.Blazor
 @using OnTest.Blazor.Shared
 @using OnTest.Blazor.Settings
 @using OnTest.Blazor.Pages.Auth
+@using OnTest.Blazor.Shared.State
 @using OnTest.Blazor.Services.Auth
 @using OnTest.Blazor.Transport.Auth
 @using OnTest.Blazor.Authentication
 @using OnTest.Blazor.Shared.Dialogs
 @using OnTest.Blazor.Services.Account
 @using OnTest.Blazor.Shared.Components
-@using OnTest.Blazor.Services.Preference
 
 @attribute [Authorize]
 @inject ISnackbar _snackBar
@@ -37,7 +35,5 @@
 @inject IDialogService _dialogService
 @inject IAccountService _accountService
 @inject NavigationManager _navigationManager
-@inject IPreferenceService _preferenceService
 @inject IAuthorizationService _authorizationService
-@inject IHttpClientInterceptor _httpClientInterceptor
 @inject AuthenticationStateProvider _authenticationStateProvider

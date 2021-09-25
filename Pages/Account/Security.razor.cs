@@ -1,27 +1,25 @@
 using System.Threading.Tasks;
 using Blazored.FluentValidation;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using OnTest.Blazor.Authentication;
 using OnTest.Blazor.Extensions;
+using OnTest.Blazor.Shared.State;
 using OnTest.Blazor.Transport.Account;
 
 namespace OnTest.Blazor.Pages.Account
 {
     public partial class Security
     {
+        [Inject] public UserState UserState { get; set; }
+
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private readonly ChangePasswordRequest _changeModel = new();
         private readonly SetPasswordRequest _setModel = new();
 
-        private bool _passwordSet = true;
         private bool _processing;
 
-        protected override async Task OnInitializedAsync()
-        {
-            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            _passwordSet = state.User.GetPasswordSet();
-        }
 
         private async Task SubmitChangePasswordAsync()
         {
@@ -48,11 +46,10 @@ namespace OnTest.Blazor.Pages.Account
             var result = await _accountService.SetPasswordAsync(_setModel);
             if (result.Succeeded)
             {
-                _passwordSet = true;
                 _setModel.Password = "";
                 _setModel.ConfirmPassword = "";
+                UserState.PasswordSet = true;
                 _snackBar.Add("Password Set!", Severity.Success);
-                await (_authenticationStateProvider as HostStateProvider).StateChangedNotifyAsync();
             }
             else
             {

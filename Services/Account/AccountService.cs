@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -96,6 +97,13 @@ namespace OnTest.Blazor.Services.Account
         {
             var response = await _httpClient.DeleteAsync("account/avatar");
             var result = await response.ToResult<User>();
+            return result;
+        }
+
+        public async Task<IResult> SetPreferenceAsync(KeyValuePair<string, string> request)
+        {
+            var response = await _httpClient.PostAsJsonAsync("account/set-preference", request, JsonExtensions.Options);
+            var result = await response.ToResult();
             return result;
         }
     }

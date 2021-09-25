@@ -4,25 +4,26 @@ using FluentValidation;
 using Microsoft.AspNetCore.Components.Authorization;
 using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Services.Account;
+using OnTest.Blazor.Shared.State;
 using OnTest.Blazor.Transport.Account;
 
 namespace OnTest.Blazor.Validators.Account
 {
     public class UpdateProfileRequestValidator : AbstractValidator<UpdateProfileRequest>
     {
+        private readonly UserState _userState;
         private readonly IAccountService _accountService;
-        private readonly AuthenticationStateProvider _authenticationStateProvider;
 
         public UpdateProfileRequestValidator(
-            IAccountService accountService,
-            AuthenticationStateProvider authenticationStateProvider
+            UserState userState,
+            IAccountService accountService
         )
         {
+            _userState  = userState ??
+                throw new ArgumentNullException(nameof(userState));
+
             _accountService = accountService ??
                 throw new ArgumentNullException(nameof(accountService));
-
-            _authenticationStateProvider = authenticationStateProvider ??
-                throw new ArgumentNullException(nameof(authenticationStateProvider));
 
             RuleFor(request => request.FirstName)
                 .NotEmpty().WithMessage("{PropertyName} is required")
@@ -43,8 +44,7 @@ namespace OnTest.Blazor.Validators.Account
                     if (string.IsNullOrEmpty(username))
                         return true;
 
-                    var user = await _authenticationStateProvider.GetAuthenticationStateAsync();
-                    if (user.User.GetUsername() == username)
+                    if (_userState.Username == username)
                         return true;
 
                     var result = await _accountService.CheckUsernameAsync(username);

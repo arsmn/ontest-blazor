@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Services.Account;
 using OnTest.Blazor.Services.Auth;
+using OnTest.Blazor.Shared.State;
 using OnTest.Blazor.Transport.Auth;
 
 namespace OnTest.Blazor.Authentication
@@ -17,14 +18,20 @@ namespace OnTest.Blazor.Authentication
     public class HostStateProvider : AuthenticationStateProvider
     {
         private const string CacheKey = "Auth-State";
+
         private readonly IAppCache _appCache;
+        private readonly UserState _userState;
         private readonly IAccountService _accountService;
 
         public HostStateProvider(
+            UserState userState,
             IAppCache appCache,
             IAccountService accountService
         )
         {
+            _userState = userState ??
+                throw new ArgumentNullException(nameof(userState));
+
             _appCache = appCache ??
                 throw new ArgumentNullException(nameof(appCache));
 
@@ -58,13 +65,11 @@ namespace OnTest.Blazor.Authentication
                     new Claim(ClaimTypes.Name, result.Data.Username ?? ""),
                     new Claim(ClaimTypes.Surname, result.Data.LastName ?? ""),
                     new Claim(ClaimTypes.GivenName, result.Data.FirstName ?? ""),
-                    new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString() ?? ""),
-                    new Claim(ClaimsPrincipalExtensions.ClaimTypeAvatar, result.Data.Avatar ?? ""),
-                    new Claim(ClaimsPrincipalExtensions.ClaimTypeFullName, result.Data.FullName ?? ""),
-                    new Claim(ClaimsPrincipalExtensions.ClaimTypePreferenceTheme, result.Data.PreferenceTheme),
-                    new Claim(ClaimsPrincipalExtensions.ClaimTypePasswordSet, result.Data.PasswordSet.ToString()),
-                    new Claim(ClaimsPrincipalExtensions.ClaimTypeEmailVerified, result.Data.EmailVerified.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString() ?? "")
                 };
+
+                _userState.SetModel(result.Data);
+
                 return new ClaimsPrincipal(new ClaimsIdentity(claims, "cookie"));
             }
             else

@@ -1,6 +1,6 @@
 @attribute [Authorize]
 
-@if (_passwordSet)
+@if (UserState.PasswordSet)
 {
     <EditForm Model="@_changeModel" OnValidSubmit="SubmitChangePasswordAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />

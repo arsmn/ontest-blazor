@@ -1,38 +1,21 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using OnTest.Blazor.Extensions;
+using OnTest.Blazor.Shared.State;
 
 namespace OnTest.Blazor.Shared.Components
 {
-    public partial class UserCard
+    public partial class UserCard : IDisposable
     {
+        [Inject] public UserState UserState { get; set; }
         [Parameter] public UserCardMode Mode { get; set; }
         [Parameter] public string Class { get; set; }
 
-        private long Id { get; set; }
-        private string Email { get; set; }
-        private string Avatar { get; set; }
-        private string LastName { get; set; }
-        private string FirstName { get; set; }
-        private char FirstLetterOfName { get; set; }
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await LoadDataAsync();
-        }
-
-        private async Task LoadDataAsync()
-        {
-            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var user = state.User;
-
-            this.Id = user.GetId();
-            this.Email = user.GetEmail();
-            this.Avatar = user.GetAvatar();
-            this.LastName = user.GetLastName();
-            this.FirstName = user.GetFirstName();
-            this.FirstLetterOfName = this.FirstName.Length > 0 ? FirstName[0] : '-';
+            UserState.OnChange += StateHasChanged;
         }
 
         private void Signout()
@@ -46,6 +29,11 @@ namespace OnTest.Blazor.Shared.Components
 
             var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
             _dialogService.Show<Dialogs.Signout>("Signout", parameters, options);
+        }
+
+        public void Dispose()
+        {
+            UserState.OnChange -= StateHasChanged;
         }
     }
 

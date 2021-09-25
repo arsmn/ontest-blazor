@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using OnTest.Blazor.Transport.Account;
@@ -19,5 +20,6 @@ namespace OnTest.Blazor.Services.Account
         Task<IResult<User>> SetAvatarAsync(MultipartFormDataContent content);
         Task<IResult<User>> GenerateAvatarAsync();
         Task<IResult<User>> DeleteAvatarAsync();
+        Task<IResult> SetPreferenceAsync(KeyValuePair<string, string> request);
     }
 }

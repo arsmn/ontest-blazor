@@ -11,10 +11,10 @@ using System.Linq;
 using System.Net.Http;
 using FluentValidation;
 using Validators;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using OnTest.Blazor.Settings;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
+using OnTest.Blazor.Shared.State;
 
 namespace OnTest.Blazor.Extensions
 {
@@ -40,6 +40,7 @@ namespace OnTest.Blazor.Extensions
                     configuration.SnackbarConfiguration.VisibleStateDuration = 3000;
                     configuration.SnackbarConfiguration.ShowCloseIcon = false;
                 })
+                .AddSingleton<UserState>()
                 .AddScoped<AuthenticationStateProvider, HostStateProvider>()
                 .AddServices()
                 .AddValidators()
@@ -47,7 +48,7 @@ namespace OnTest.Blazor.Extensions
                 .Configure<AppConfig>(options => builder.Configuration.GetSection("OnTest").Bind(options))
                 .AddScoped(sp => sp
                     .GetRequiredService<IHttpClientFactory>()
-                    .CreateClient(ClientName).EnableIntercept(sp))
+                    .CreateClient(ClientName))
                 .AddHttpClient(ClientName, client =>
                 {
                     client.DefaultRequestHeaders.AcceptLanguage.Clear();
@@ -56,9 +57,9 @@ namespace OnTest.Blazor.Extensions
                 }).AddHttpMessageHandler(() => new DefaultBrowserOptionsMessageHandler
                 {
                     DefaultBrowserRequestMode = BrowserRequestMode.Cors,
+                    DefaultBrowserRequestCache = BrowserRequestCache.NoCache,
                     DefaultBrowserRequestCredentials = BrowserRequestCredentials.Include
                 });
-            builder.Services.AddHttpClientInterceptor();
 
             return builder;
         }
