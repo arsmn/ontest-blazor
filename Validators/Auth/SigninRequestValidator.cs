@@ -7,8 +7,8 @@ namespace OnTest.Blazor.Validators.Auth
     {
         public SigninRequestValidator()
         {
-            RuleFor(request => request.Email)
-                .NotEmpty().WithMessage("{PropertyName} is required");
+            RuleFor(request => request.Identifier)
+                .NotEmpty().WithMessage("Username or Email is required");
             RuleFor(request => request.Password)
                 .NotEmpty().WithMessage("{PropertyName} is required");
         }
