@@ -21,5 +21,6 @@ namespace OnTest.Blazor.Services.Account
         Task<IResult<User>> GenerateAvatarAsync();
         Task<IResult<User>> DeleteAvatarAsync();
         Task<IResult> SetPreferenceAsync(KeyValuePair<string, string> request);
+        Task<IResult<GetSessionsResponse>> GetSessionsAsync();
     }
 }

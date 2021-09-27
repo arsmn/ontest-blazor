@@ -106,5 +106,12 @@ namespace OnTest.Blazor.Services.Account
             var result = await response.ToResult();
             return result;
         }
+
+        public async Task<IResult<GetSessionsResponse>> GetSessionsAsync()
+        {
+            var response = await _httpClient.GetAsync("account/sessions");
+            var result = await response.ToResult<GetSessionsResponse>();
+            return result;
+        }
     }
 }

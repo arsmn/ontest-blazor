@@ -1,0 +1,34 @@
+<MudGrid>
+    @if (_model?.Current is not null)
+    {
+        <MudItem xs="12" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText>@_model.Current.ClientInfo</MudText>
+                    <MudText Typo="Typo.body2">@_model.Current.OSInfo</MudText>
+                    <MudText Typo="Typo.body2">@_model.Current.IPInfo</MudText>
+                    <img src="@_model.Current?.Properties?.IPLocation?.CountryFlag" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudChip Variant="Variant.Outlined" Color="Color.Primary">Online</MudChip>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+    </MudGrid>
+    <MudGrid>
+        @foreach (var session in _model?.Others)
+    {
+        <MudItem xs="12" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText>Story of the day</MudText>
+                    <MudText Typo="Typo.body2">The quick, brown fox jumps over a lazy dog.</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary">Terminate</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+    </MudGrid>

@@ -2,18 +2,21 @@
 @attribute [Authorize]
 
 <OnTestTitle Title="Settings" Description="Manage your account" />
-<MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6" @bind-ActivePanelIndex="ActiveIndex">
+<MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6" @bind-ActivePanelIndex="_activeIndex">
     <MudTabPanel Text="Profile" Icon="@Icons.Material.Filled.Person">
         <Profile />
     </MudTabPanel>
     <MudTabPanel Text="Security" Icon="@Icons.Material.Filled.Security">
         <Security />
     </MudTabPanel>
+    <MudTabPanel Text="Devices" Icon="@Icons.Material.Filled.Devices">
+        <Devices />
+    </MudTabPanel>
 </MudTabs>
 
 @code {
     [Parameter] public string Tab { get; set; }
-    private int ActiveIndex { get; set; }
+    private int _activeIndex;
 
     protected override void OnParametersSet()
     {
@@ -22,10 +25,13 @@
         switch (Tab)
         {
             case "profile":
-                ActiveIndex = 0;
+                _activeIndex = 0;
                 break;
             case "security":
-                ActiveIndex = 1;
+                _activeIndex = 1;
+                break;
+            case "devices":
+                _activeIndex = 2;
                 break;
         }
     }

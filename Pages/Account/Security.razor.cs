@@ -2,8 +2,6 @@ using System.Threading.Tasks;
 using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using OnTest.Blazor.Authentication;
-using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Shared.State;
 using OnTest.Blazor.Transport.Account;
 
