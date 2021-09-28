@@ -1,32 +1,56 @@
-<MudGrid>
+<MudGrid Class="d-flex justify-center">
     @if (_model?.Current is not null)
     {
-        <MudItem xs="12" md="4">
+        <MudItem xs="12" md="8">
             <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">@_model.Current.ClientInfo</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <img src="@_model.Current?.Properties?.IPLocation?.CountryFlag" />
+                    </CardHeaderActions>
+                </MudCardHeader>
                 <MudCardContent>
-                    <MudText>@_model.Current.ClientInfo</MudText>
+                    <MudText Typo="Typo.body2">@_model.Current.IssuedAt</MudText>
                     <MudText Typo="Typo.body2">@_model.Current.OSInfo</MudText>
                     <MudText Typo="Typo.body2">@_model.Current.IPInfo</MudText>
-                    <img src="@_model.Current?.Properties?.IPLocation?.CountryFlag" />
                 </MudCardContent>
-                <MudCardActions>
-                    <MudChip Variant="Variant.Outlined" Color="Color.Primary">Online</MudChip>
+                <MudCardActions Class="d-flex justify-center">
+                    @* <MudChip Variant="Variant.Outlined" Color="Color.Primary">Online</MudChip> *@
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" FullWidth="true">
+                        Terminate all other
+                        sessions
+                    </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
     }
     </MudGrid>
-    <MudGrid>
+    <MudDivider />
+    <MudGrid Class="d-flex justify-center">
         @foreach (var session in _model?.Others)
     {
-        <MudItem xs="12" md="4">
+        <MudItem xs="12" md="8">
             <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">@session.ClientInfo</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <img src="@_model.Current?.Properties?.IPLocation?.CountryFlag" />
+                    </CardHeaderActions>
+                </MudCardHeader>
                 <MudCardContent>
-                    <MudText>Story of the day</MudText>
-                    <MudText Typo="Typo.body2">The quick, brown fox jumps over a lazy dog.</MudText>
+                    <MudText Typo="Typo.body2">@session.IssuedAt</MudText>
+                    <MudText Typo="Typo.body2">@session.OSInfo</MudText>
+                    <MudText Typo="Typo.body2">@session.IPInfo</MudText>
                 </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary">Terminate</MudButton>
+                <MudCardActions Class="d-flex justify-center">
+                    @* <MudChip Variant="Variant.Outlined" Color="Color.Primary">Online</MudChip> *@
+                    <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" FullWidth="true">
+                        Terminate
+                    </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>

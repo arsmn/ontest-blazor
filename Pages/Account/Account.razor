@@ -9,9 +9,9 @@
     <MudTabPanel Text="Security" Icon="@Icons.Material.Filled.Security">
         <Security />
     </MudTabPanel>
-    <MudTabPanel Text="Devices" Icon="@Icons.Material.Filled.Devices">
+    @* <MudTabPanel Text="Devices" Icon="@Icons.Material.Filled.Devices">
         <Devices />
-    </MudTabPanel>
+    </MudTabPanel> *@
 </MudTabs>
 
 @code {
@@ -30,9 +30,9 @@
             case "security":
                 _activeIndex = 1;
                 break;
-            case "devices":
+            @* case "devices":
                 _activeIndex = 2;
-                break;
+                break; *@
         }
     }
 }
