@@ -22,6 +22,7 @@
 @using OnTest.Blazor.Pages.Auth
 @using OnTest.Blazor.Shared.State
 @using OnTest.Blazor.Services.Auth
+@using OnTest.Blazor.Services.Exam
 @using OnTest.Blazor.Transport.Auth
 @using OnTest.Blazor.Authentication
 @using OnTest.Blazor.Shared.Dialogs
@@ -31,6 +32,7 @@
 @attribute [Authorize]
 @inject ISnackbar _snackBar
 @inject IAuthService _authService
+@inject IExamService _examService
 @inject IOptions<AppConfig> _options
 @inject IDialogService _dialogService
 @inject IAccountService _accountService

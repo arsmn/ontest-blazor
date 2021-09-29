@@ -11,6 +11,9 @@
         <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit"
             OnClick="@((e) => ToggleTheme())" />
     </MudTooltip>
+    <MudMenu Icon="@Icons.Material.Filled.AddCircle" Color="Color.Inherit" Dense="true">
+        <MudMenuItem Link="/exam/new">New Exam</MudMenuItem>
+    </MudMenu>
     <UserCard Mode="@UserCardMode.Menu" Class="mt-1 ml-4" />
 </MudAppBar>
 <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Always">

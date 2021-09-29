@@ -1,0 +1,58 @@
+@page "/exam/new"
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 50vh;">
+    <MudPaper Elevation="25" Class="pa-8" Style="width: 500px; padding-top: 0px !important;">
+        @if (_processing)
+        {
+            <MudProgressLinear Color="Color.Secondary" Indeterminate="true"
+            Style="margin-left: -30px; margin-right: -30px;" />
+        }
+        <EditForm Model="@_model" OnValidSubmit="SubmitAsync" style="padding-top: 30px;">
+            <FluentValidationValidator @ref="_fluentValidationValidator" />
+            <MudGrid>
+                <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Color="Color.Primary"
+                            Style="width:54px; height:54px;" />
+                    </div>
+                </MudItem>
+                <DataAnnotationsValidator />
+                <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudText Typo="Typo.h4">Create a new exam</MudText>
+                    </div>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Title" Variant="Variant.Outlined" @bind-Value="_model.Title"
+                        For="@(() => _model.Title)" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudDatePicker Label="Start Date" @bind-Date="_model.StartAt" AutoClose="true"
+                        PickerVariant="PickerVariant.Dialog" For="@(() => _model.StartAt)" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudTimePicker Label="Start Time" @bind-Time="_model.StartAtTime" AutoClose="true"
+                        PickerVariant="PickerVariant.Dialog" For="@(() => _model.StartAtTime)" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudDatePicker Label="Deadline Date" @bind-Date="_model.Deadline" AutoClose="true"
+                        PickerVariant="PickerVariant.Dialog" For="@(() => _model.Deadline)" Disabled="@(_model.Once)" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudTimePicker Label="Deadline Time" @bind-Time="_model.DeadlineTime" AutoClose="true"
+                        PickerVariant="PickerVariant.Dialog" For="@(() => _model.DeadlineTime)"
+                        Disabled="@(_model.Once)" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudSwitch @bind-Checked="_model.Once" Color="Color.Secondary">This exam has a fixed data and
+                        occures once.</MudSwitch>
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-center">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                        Disabled="@(!Validated || _processing)" Color="Color.Primary" Size="Size.Large"
+                        Style="width: 100%;">Create Exam</MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudPaper>
+</MudContainer>
