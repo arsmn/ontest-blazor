@@ -1,0 +1,101 @@
+<MudGrid>
+    <MudItem xs="12" sm="6" md="8">
+        <MudCard Elevation="25">
+            @if (_coverProcessing)
+            {
+                <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+            }
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.body1">Cover</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudCardMedia Image="@_cardCover" Height="360" />
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-center">
+                <InputFile id="fileInput" OnChange="SelectCover" accept=".jpg, .jpeg, .png" hidden />
+                <MudTooltip Text="Select" Placement="Placement.Bottom">
+                    <MudIconButton HtmlTag="label" Color="Color.Primary" Icon="@Icons.Filled.Image" for="fileInput"
+                        Disabled="@(_coverProcessing)" />
+                </MudTooltip>
+                @if (!string.IsNullOrEmpty(_tmpCover))
+                {
+                    <MudTooltip Text="Upload" Placement="Placement.Bottom">
+                        <MudIconButton Color="Color.Success" Icon="@Icons.Filled.CloudUpload" OnClick="UploadCover"
+                        Disabled="@(_coverProcessing)" />
+                    </MudTooltip>
+                }
+                @if (string.IsNullOrEmpty(_tmpCover) && !string.IsNullOrEmpty(_examCover))
+                {
+                    <MudTooltip Text="Delete" Placement="Placement.Bottom">
+                        <MudIconButton Color="Color.Error" Icon="@Icons.Filled.Delete" OnClick="DeleteCover"
+                        Disabled="@(_coverProcessing)" />
+                    </MudTooltip>
+                }
+                @if (!string.IsNullOrEmpty(_tmpCover))
+                {
+                    <MudTooltip Text="Cancel" Placement="Placement.Bottom">
+                        <MudIconButton Color="Color.Warning" Icon="@Icons.Filled.Cancel" OnClick="ClearCover"
+                        Disabled="@(_coverProcessing)" />
+                    </MudTooltip>
+                }
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <EditForm Model="@_model" OnValidSubmit="SubmitAsync">
+            <FluentValidationValidator @ref="_fluentValidationValidator" />
+            <MudCard Elevation="25">
+                @if (_processing)
+                {
+                    <MudProgressLinear Color="Color.Secondary" Indeterminate="true" />
+                }
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText>Exam Details</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField T="string" Label="Title" Variant="Variant.Outlined" @bind-Value="_model.Title"
+                                For="@(() => _model.Title)" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="6">
+                            <MudDatePicker Label="Start Date" @bind-Date="_model.StartAt" AutoClose="true"
+                                PickerVariant="PickerVariant.Dialog" For="@(() => _model.StartAt)" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="6">
+                            <MudTimePicker Label="Start Time" @bind-Time="_model.StartAtTime" AutoClose="true"
+                                PickerVariant="PickerVariant.Dialog" For="@(() => _model.StartAtTime)" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="6">
+                            <MudDatePicker Label="Deadline Date" @bind-Date="_model.Deadline" AutoClose="true"
+                                PickerVariant="PickerVariant.Dialog" For="@(() => _model.Deadline)"
+                                Disabled="@(_model.Once)" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="6">
+                            <MudTimePicker Label="Deadline Time" @bind-Time="_model.DeadlineTime" AutoClose="true"
+                                PickerVariant="PickerVariant.Dialog" For="@(() => _model.DeadlineTime)"
+                                Disabled="@(_model.Once)" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudSwitch @bind-Checked="_model.Once" Color="Color.Secondary">This exam has a fixed data
+                                and occures once.</MudSwitch>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudSwitch @bind-Checked="_model.FreeMovement" Color="Color.Secondary">The examinee can move
+                                between questions freely.</MudSwitch>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions Class="pb-4 pl-4">
+                    <MudButton Variant="Variant.Filled" Disabled="@(!Validated || _processing)" Color="Color.Primary"
+                        Class="ml-auto" ButtonType="ButtonType.Submit">
+                        Save changes</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    </MudItem>
+</MudGrid>

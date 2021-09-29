@@ -1,0 +1,34 @@
+@page "/exam/{id:long}/{tab?}"
+@attribute [Authorize]
+
+<OnTestTitle Title="Exam" Description="Manage your exam" />
+<MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6"
+    @bind-ActivePanelIndex="_activeIndex">
+    <MudTabPanel Text="Details" Icon="@Icons.Material.Filled.Details">
+        <Details Id="Id" />
+    </MudTabPanel>
+    <MudTabPanel Text="Questions" Icon="@Icons.Material.Filled.QuestionAnswer">
+        @* <Questions /> *@
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+    [Parameter] public long Id { get; set; }
+    [Parameter] public string Tab { get; set; }
+    private int _activeIndex;
+
+    protected override void OnParametersSet()
+    {
+        Tab = Tab ?? "profile";
+
+        switch (Tab)
+        {
+            case "details":
+                _activeIndex = 0;
+                break;
+            case "questions":
+                _activeIndex = 1;
+                break;
+        }
+    }
+}

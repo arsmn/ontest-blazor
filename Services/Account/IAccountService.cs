@@ -19,7 +19,7 @@ namespace OnTest.Blazor.Services.Account
         Task<IResult> VerificationAsync(VerificationRequest request);
         Task<IResult<User>> SetAvatarAsync(MultipartFormDataContent content);
         Task<IResult<User>> GenerateAvatarAsync();
-        Task<IResult<User>> DeleteAvatarAsync();
+        Task<IResult> DeleteAvatarAsync();
         Task<IResult> SetPreferenceAsync(KeyValuePair<string, string> request);
         Task<IResult<GetSessionsResponse>> GetSessionsAsync();
     }

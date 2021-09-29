@@ -93,7 +93,7 @@ namespace OnTest.Blazor.Services.Account
             return result;
         }
 
-        public async Task<IResult<User>> DeleteAvatarAsync()
+        public async Task<IResult> DeleteAvatarAsync()
         {
             var response = await _httpClient.DeleteAsync("account/avatar");
             var result = await response.ToResult<User>();

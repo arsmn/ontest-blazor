@@ -6,6 +6,7 @@ namespace OnTest.Blazor.Transport.Exam
     public class CreateExamRequest
     {
         public string Title { get; set; }
+        public bool FreeMovement { get; set; }
         public DateTime? StartAt { get; set; }
 
         [JsonIgnore]
@@ -29,6 +30,12 @@ namespace OnTest.Blazor.Transport.Exam
             {
                 Deadline = Deadline.Value.Add(DeadlineTime.Value);
                 Deadline = Deadline.Value.ToUniversalTime();
+            }
+
+            if (Once)
+            {
+                Deadline = null;
+                DeadlineTime = null;
             }
         }
     }
