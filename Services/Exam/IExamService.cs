@@ -1,6 +1,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using OnTest.Blazor.Transport.Exam;
+using OnTest.Blazor.Transport.Question;
+using OnTest.Blazor.Transport.Shared.Models;
 using OnTest.Blazor.Transport.Shared.Wrapper;
 
 namespace OnTest.Blazor.Services.Exam
@@ -9,8 +11,11 @@ namespace OnTest.Blazor.Services.Exam
     {
         Task<IResult<Transport.Shared.Models.Exam>> GetExamAsync(long id);
         Task<IResult<Transport.Shared.Models.Exam>> CreateExamAsync(CreateExamRequest request);
-        Task<IResult> UpdateExamAsync(UpdateExamRequest request);
+        Task<IResult> UpdateExamAsync(CreateExamRequest request);
         Task<IResult<Transport.Shared.Models.Exam>> SetCoverAsync(MultipartFormDataContent content, long id);
         Task<IResult> DeleteCoverAsync(long id);
+        Task<Paginated<Question>> GetQuestionsAsync(long id, Pagination pagination);
+        Task<IResult<Question>> CreateQuestionAsync(CreateQuestionRequest request);
+        Task<IResult> UpdateQuestionAsync(CreateQuestionRequest request);
     }
 }

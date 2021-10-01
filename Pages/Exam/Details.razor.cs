@@ -16,7 +16,7 @@ namespace OnTest.Blazor.Pages.Exam
 
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
-        private readonly UpdateExamRequest _model = new();
+        private readonly CreateExamRequest _model = new();
 
         private bool _processing;
 

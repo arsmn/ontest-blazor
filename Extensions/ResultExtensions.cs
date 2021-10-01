@@ -18,14 +18,17 @@ namespace OnTest.Blazor.Extensions
     
         internal static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response)
         {
-            var result = await response.Content.ReadFromJsonAsync<Result<T>>(Options);
-            return result;
+            return await response.Content.ReadFromJsonAsync<Result<T>>(Options);
         }
 
         internal static async Task<IResult> ToResult(this HttpResponseMessage response)
         {
-            var result = await response.Content.ReadFromJsonAsync<Result>(Options);
-            return result;
+            return await response.Content.ReadFromJsonAsync<Result>(Options);
+        }
+
+        internal static async Task<Paginated<T>> ToPaginated<T>(this HttpResponseMessage response)
+        {
+            return await response.Content.ReadFromJsonAsync<Paginated<T>>(Options);
         }
     }
 }

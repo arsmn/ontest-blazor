@@ -5,6 +5,8 @@ namespace OnTest.Blazor.Transport.Exam
 {
     public class CreateExamRequest
     {
+        [JsonIgnore]
+         public long Id { get; set; }
         public string Title { get; set; }
         public bool FreeMovement { get; set; }
         public DateTime? StartAt { get; set; }

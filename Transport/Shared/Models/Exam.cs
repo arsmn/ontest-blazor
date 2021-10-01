@@ -20,7 +20,6 @@ namespace OnTest.Blazor.Transport.Shared.Models
 
     public enum ExamState
     {
-        Unknown,
         Draft,
         Published
     }

@@ -1,0 +1,62 @@
+@using Transport.Shared.Models
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Question>>>(LoadDataAsync))" Hover="true" Elevation="25"
+    Dense="true" Bordered="true" Striped="true" @ref="_table">
+    <ToolBarContent>
+        <div class="justify-center mud-text-align-center">
+            <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => InvokeCreateQuestionModal())"
+                StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">Create new question
+            </MudButton>
+            <MudButton DisableElevation Variant="Variant.Filled" OnClick="ReloadData"
+                StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">
+                Reload</MudButton>
+        </div>
+        <MudSpacer />
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="id" T="Question">Id</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="exam_id" T="Question">ExamId</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="text" T="Question">Text</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="duration_time" T="Question">Duration</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="score" T="Question">Score</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="negative_score" T="Question">NegativeScore</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="ExamId">@context.ExamId</MudTd>
+        <MudTd DataLabel="Text">@context.Text</MudTd>
+        <MudTd DataLabel="Duration">@context.DurationTimeString</MudTd>
+        <MudTd DataLabel="Score">@context.Score</MudTd>
+        <MudTd DataLabel="Negative Score">@context.NegativeScore</MudTd>
+        <MudTd DataLabel="Action">
+            <MudTooltip Text="Upload" Placement="Placement.Bottom">
+                <MudIconButton Color="Color.Primary" Icon="@Icons.Filled.Edit" OnClick="(() => InvokeUpdateQuestionModal(context))" />
+            </MudTooltip>
+            <MudTooltip Text="Upload" Placement="Placement.Bottom">
+                <MudIconButton Color="Color.Error" Icon="@Icons.Filled.Delete" />
+            </MudTooltip>
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

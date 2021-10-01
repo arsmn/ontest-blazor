@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace OnTest.Blazor.Transport.Shared.Wrapper
 {
     public interface IResult

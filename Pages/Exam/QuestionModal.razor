@@ -1,0 +1,67 @@
+@using OnTest.Blazor.Transport.Shared.Models
+
+<EditForm Model="@_model" OnValidSubmit="SubmitAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            @if (State == QuestionModalState.Create)
+            {
+                <MudText Typo="Typo.h6">
+                    <MudIcon Icon="@Icons.Material.Filled.PlaylistAdd" Class="mr-3 mb-n1" />
+                    Create new question
+                </MudText>
+            }
+            else if (State == QuestionModalState.Update)
+            {
+                <MudText Typo="Typo.h6">
+                    <MudIcon Icon="@Icons.Material.Filled.EditNote" Class="mr-3 mb-n1" />
+                    Update question
+                </MudText>
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudSelect Label="Type" @bind-Value="_model.Type" Strict="true" Variant="Variant.Outlined"
+                        Format="F2">
+                        @foreach (QuestionType item in Enum.GetValues(typeof(QuestionType)))
+                        {
+                            <MudSelectItem Value="@item">@item</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField For="@(() => _model.Text)" @bind-Value="_model.Text" Label="Text"
+                        Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudNumericField For="@(() => _model.Score)" @bind-Value="_model.Score" Label="Score"
+                        Variant="Variant.Outlined" HelperText="Score for right answers" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudNumericField For="@(() => _model.NegativeScore)" @bind-Value="_model.NegativeScore"
+                        Label="Negative Score" Variant="Variant.Outlined" Adornment="Adornment.Start"
+                        AdornmentIcon="@Icons.Material.Filled.Minimize" HelperText="Score for wrong answers" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudTimePicker Label="Duration" @bind-Time="_model.DurationTime" AutoClose="true"
+                        PickerVariant="PickerVariant.Dialog" For="@(() => _model.DurationTime)"
+                        TimeEditMode="TimeEditMode.OnlyMinutes" />
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" OnClick="Cancel">Cancel</MudButton>
+            @if (State == QuestionModalState.Create)
+            {
+                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!Validated)"
+                Color="Color.Success">Create</MudButton>
+            }
+            else if (State == QuestionModalState.Update)
+            {
+                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!Validated)"
+                Color="Color.Primary">Save Changes</MudButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

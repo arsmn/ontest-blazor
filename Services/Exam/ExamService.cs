@@ -4,6 +4,8 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using OnTest.Blazor.Extensions;
 using OnTest.Blazor.Transport.Exam;
+using OnTest.Blazor.Transport.Question;
+using OnTest.Blazor.Transport.Shared.Models;
 using OnTest.Blazor.Transport.Shared.Wrapper;
 
 namespace OnTest.Blazor.Services.Exam
@@ -34,7 +36,7 @@ namespace OnTest.Blazor.Services.Exam
             return result;
         }
 
-        public async Task<IResult> UpdateExamAsync(UpdateExamRequest request)
+        public async Task<IResult> UpdateExamAsync(CreateExamRequest request)
         {
             request.Prepare();
             var response = await _httpClient.PutAsJsonAsync($"exam/{request.Id}", request, JsonExtensions.Options);
@@ -52,6 +54,29 @@ namespace OnTest.Blazor.Services.Exam
         public async Task<IResult> DeleteCoverAsync(long id)
         {
             var response = await _httpClient.DeleteAsync($"exam/{id}/cover");
+            var result = await response.ToResult();
+            return result;
+        }
+
+        public async Task<Paginated<Question>> GetQuestionsAsync(long id, Pagination pagination)
+        {
+            var response = await _httpClient.GetAsync(pagination.BuildUrl($"exam/{id}/questions"));
+            var result = await response.ToPaginated<Question>();
+            return result;
+        }
+
+        public async Task<IResult<Question>> CreateQuestionAsync(CreateQuestionRequest request)
+        {
+            request.Prepare();
+            var response = await _httpClient.PostAsJsonAsync($"exam/{request.ExamId}/question", request);
+            var result = await response.ToResult<Question>();
+            return result;
+        }
+
+        public async Task<IResult> UpdateQuestionAsync(CreateQuestionRequest request)
+        {
+            request.Prepare();
+            var response = await _httpClient.PutAsJsonAsync($"exam/{request.ExamId}/question/{request.Id}", request);
             var result = await response.ToResult();
             return result;
         }

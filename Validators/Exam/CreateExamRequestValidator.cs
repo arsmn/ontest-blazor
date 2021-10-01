@@ -4,9 +4,9 @@ using OnTest.Blazor.Transport.Exam;
 
 namespace OnTest.Blazor.Validators.Exam
 {
-    public class CreateExaRequestValidator : AbstractValidator<CreateExamRequest>
+    public class CreateExamRequestValidator : AbstractValidator<CreateExamRequest>
     {
-        public CreateExaRequestValidator()
+        public CreateExamRequestValidator()
         {
             RuleFor(request => request.Title)
                 .NotEmpty().WithMessage("{PropertyName} is required")
