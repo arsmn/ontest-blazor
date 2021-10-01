@@ -12,7 +12,7 @@ namespace OnTest.Blazor.Pages.Exam
 {
     public partial class Details
     {
-        [Parameter] public long Id { get; set; }
+        [Parameter] public long ExamId { get; set; }
 
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
@@ -28,9 +28,10 @@ namespace OnTest.Blazor.Pages.Exam
         private async Task LoadDataAsync()
         {
             _processing = true;
-            var result = await _examService.GetExamAsync(Id);
+            var result = await _examService.GetExamAsync(ExamId);
             if (result.Succeeded)
             {
+                _model.Id = ExamId;
                 _model.Title = result.Data.Title;
                 _model.StartAt = result.Data.StartAt;
                 _model.StartAtTime = result.Data.StartAt.TimeOfDay;
@@ -102,7 +103,7 @@ namespace OnTest.Blazor.Pages.Exam
                 content: fileContent,
                 name: "\"file\"",
                 fileName: _coverFile.Name);
-            var result = await _examService.SetCoverAsync(content, Id);
+            var result = await _examService.SetCoverAsync(content, ExamId);
             if (result.Succeeded)
             {
                 _examCover = _tmpCover;
@@ -120,7 +121,7 @@ namespace OnTest.Blazor.Pages.Exam
         private async Task DeleteCover()
         {
             _coverProcessing = true;
-            var result = await _examService.DeleteCoverAsync(Id);
+            var result = await _examService.DeleteCoverAsync(ExamId);
             if (result.Succeeded)
             {
                 _tmpCover = string.Empty;

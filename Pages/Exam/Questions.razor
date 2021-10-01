@@ -4,8 +4,9 @@
     Dense="true" Bordered="true" Striped="true" @ref="_table">
     <ToolBarContent>
         <div class="justify-center mud-text-align-center">
-            <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => InvokeCreateQuestionModal())"
-                StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">Create new question
+            <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary"
+                OnClick="(() => InvokeCreateQuestionModal())" StartIcon="@Icons.Material.Filled.Add"
+                IconColor="Color.Surface">Create new question
             </MudButton>
             <MudButton DisableElevation Variant="Variant.Filled" OnClick="ReloadData"
                 StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">
@@ -19,10 +20,10 @@
             <MudTableSortLabel SortLabel="id" T="Question">Id</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortLabel="exam_id" T="Question">ExamId</MudTableSortLabel>
+            <MudTableSortLabel SortLabel="text" T="Question">Text</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortLabel="text" T="Question">Text</MudTableSortLabel>
+            <MudTableSortLabel SortLabel="type" T="Question">Type</MudTableSortLabel>
         </MudTh>
         <MudTh>
             <MudTableSortLabel SortLabel="duration_time" T="Question">Duration</MudTableSortLabel>
@@ -36,17 +37,19 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
-        <MudTd DataLabel="ExamId">@context.ExamId</MudTd>
         <MudTd DataLabel="Text">@context.Text</MudTd>
+        <MudTd DataLabel="Type">@context.Type</MudTd>
         <MudTd DataLabel="Duration">@context.DurationTimeString</MudTd>
         <MudTd DataLabel="Score">@context.Score</MudTd>
         <MudTd DataLabel="Negative Score">@context.NegativeScore</MudTd>
         <MudTd DataLabel="Action">
-            <MudTooltip Text="Upload" Placement="Placement.Bottom">
-                <MudIconButton Color="Color.Primary" Icon="@Icons.Filled.Edit" OnClick="(() => InvokeUpdateQuestionModal(context))" />
+            <MudTooltip Text="Update" Placement="Placement.Bottom">
+                <MudIconButton Color="Color.Primary" Icon="@Icons.Filled.Edit"
+                    OnClick="(() => InvokeUpdateQuestionModal(context))" />
             </MudTooltip>
-            <MudTooltip Text="Upload" Placement="Placement.Bottom">
-                <MudIconButton Color="Color.Error" Icon="@Icons.Filled.Delete" />
+            <MudTooltip Text="Delete" Placement="Placement.Bottom">
+                <MudIconButton Color="Color.Error" Icon="@Icons.Filled.Delete"
+                    OnClick="(() => InvokeDeleteQuestionModal(context))" />
             </MudTooltip>
         </MudTd>
     </RowTemplate>

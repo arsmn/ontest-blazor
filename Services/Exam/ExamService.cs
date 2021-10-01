@@ -80,5 +80,12 @@ namespace OnTest.Blazor.Services.Exam
             var result = await response.ToResult();
             return result;
         }
+
+        public async Task<IResult> DeleteQuestionAsync(long eid, long qid)
+        {
+            var response = await _httpClient.DeleteAsync($"exam/{eid}/question/{qid}");
+            var result = await response.ToResult();
+            return result;
+        }
     }
 }

@@ -17,5 +17,6 @@ namespace OnTest.Blazor.Services.Exam
         Task<Paginated<Question>> GetQuestionsAsync(long id, Pagination pagination);
         Task<IResult<Question>> CreateQuestionAsync(CreateQuestionRequest request);
         Task<IResult> UpdateQuestionAsync(CreateQuestionRequest request);
+        Task<IResult> DeleteQuestionAsync(long eid, long qid);
     }
 }
