@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components;
@@ -19,6 +21,24 @@ namespace OnTest.Blazor.Pages.Exam
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private CreateQuestionRequest _model = new();
 
+        protected override async Task OnInitializedAsync()
+        {
+            var result = await _examService.GetQuestionOptionsAsync(ExamId, Question.Id);
+            if (result.Succeeded)
+            {
+                _model.Options.AddRange(result.Data.Select(o => new CreateOptionRequest
+                {
+                    Text = o.Text,
+                    Answer = o.Answer
+                }));
+                _model.SelectedTag = _model.Options?.FirstOrDefault(o => o.Answer == true)?.Tag;
+            }
+            else
+            {
+                _snackBar.Add(result.Error.Message, Severity.Error);
+            }
+        }
+
         protected override void OnParametersSet()
         {
             _model.ExamId = ExamId;
@@ -36,6 +56,23 @@ namespace OnTest.Blazor.Pages.Exam
         private void Cancel()
         {
             MudDialog.Cancel();
+        }
+
+        private void AddOption()
+        {
+            if (_model.Options.Count < 10)
+            {
+                _model.Options.Add(new CreateOptionRequest());
+            }
+            else
+            {
+                _snackBar.Add("Maximum options reached!", Severity.Warning);
+            }
+        }
+
+        private void RemoveOption(string tag)
+        {
+            _model.Options.Remove(_model.Options.First(o => o.Tag == tag));
         }
 
         private async Task SubmitAsync()

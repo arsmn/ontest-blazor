@@ -10,8 +10,6 @@ namespace OnTest.Blazor.Transport.Shared.Models
         public long Id { get; set; }
         public long ExamId { get; set; }
         public string Text { get; set; }
-        
-        [JsonConverter(typeof(JsonStringEnumConverter))]
         public QuestionType Type { get; set; }
         public long Duration { get; set; }
         public int Score { get; set; }

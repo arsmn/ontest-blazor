@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using OnTest.Blazor.Transport.Exam;
@@ -18,5 +19,6 @@ namespace OnTest.Blazor.Services.Exam
         Task<IResult<Question>> CreateQuestionAsync(CreateQuestionRequest request);
         Task<IResult> UpdateQuestionAsync(CreateQuestionRequest request);
         Task<IResult> DeleteQuestionAsync(long eid, long qid);
+        Task<IResult<List<Option>>> GetQuestionOptionsAsync(long eid, long qid);
     }
 }

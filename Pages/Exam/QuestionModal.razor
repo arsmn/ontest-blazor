@@ -32,7 +32,7 @@
                 </MudItem>
                 <MudItem xs="12">
                     <MudTextField For="@(() => _model.Text)" @bind-Value="_model.Text" Label="Text"
-                        Variant="Variant.Outlined" />
+                        Variant="Variant.Outlined" Lines="5" />
                 </MudItem>
                 <MudItem xs="12" sm="6" md="6">
                     <MudNumericField For="@(() => _model.Score)" @bind-Value="_model.Score" Label="Score"
@@ -43,14 +43,43 @@
                         Label="Negative Score" Variant="Variant.Outlined" Adornment="Adornment.Start"
                         AdornmentIcon="@Icons.Material.Filled.Minimize" HelperText="Score for wrong answers" />
                 </MudItem>
-                <MudItem xs="12" sm="6" md="6">
+                <MudItem xs="12">
                     <MudTimePicker Label="Duration" @bind-Time="_model.DurationTime" AutoClose="true"
                         PickerVariant="PickerVariant.Dialog" For="@(() => _model.DurationTime)"
-                        TimeEditMode="TimeEditMode.OnlyMinutes" />
+                        TimeEditMode="TimeEditMode.OnlyMinutes" Variant="Variant.Outlined" />
                 </MudItem>
+
+                @if (_model.Type == QuestionType.MultipleChoice)
+                {
+                    @foreach (var opt in _model.Options)
+                    {
+                        <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                            <MudCheckBox @bind-Checked="opt.Answer" Color="Color.Primary" Dense="true" >
+                                <MudTextField @bind-Value="opt.Text" Variant="Variant.Outlined" Margin="Margin.Dense" 
+                                Adornment="Adornment.End" AdornmentColor="Color.Error" AdornmentIcon="@Icons.Material.Filled.Delete" OnAdornmentClick="(() => RemoveOption(opt.Tag))" />
+                            </MudCheckBox>
+                        </MudItem>
+                    }
+                }
+                else if (_model.Type == QuestionType.SingleChoice)
+                {
+                    <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                        <MudRadioGroup @bind-SelectedOption="_model.SelectedTag" >
+                            @foreach (var opt in _model.Options)
+                            {
+                            <MudRadio Option="opt.Tag" Color="Color.Primary">
+                                <MudTextField @bind-Value="opt.Text" Variant="Variant.Outlined" Margin="Margin.Dense"
+                                Adornment="Adornment.End" AdornmentColor="Color.Error" AdornmentIcon="@Icons.Material.Filled.Delete" OnAdornmentClick="(() => RemoveOption(opt.Tag))" />
+                            </MudRadio>
+                            }
+                    </MudRadioGroup>
+                </MudItem>
+                }
+
             </MudGrid>
         </DialogContent>
         <DialogActions>
+            <MudIconButton Icon="@Icons.Material.Filled.AddCircle" Color="Color.Success" OnClick="AddOption" />
             <MudButton Variant="Variant.Filled" OnClick="Cancel">Cancel</MudButton>
             @if (State == QuestionModalState.Create)
             {

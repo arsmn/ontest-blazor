@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -85,6 +86,13 @@ namespace OnTest.Blazor.Services.Exam
         {
             var response = await _httpClient.DeleteAsync($"exam/{eid}/question/{qid}");
             var result = await response.ToResult();
+            return result;
+        }
+
+        public async Task<IResult<List<Option>>> GetQuestionOptionsAsync(long eid, long qid)
+        {
+            var response = await _httpClient.GetAsync($"exam/{eid}/question/{qid}/options");
+            var result = await response.ToResult<List<Option>>();
             return result;
         }
     }
