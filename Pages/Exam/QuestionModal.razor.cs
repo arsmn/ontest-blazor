@@ -23,19 +23,22 @@ namespace OnTest.Blazor.Pages.Exam
 
         protected override async Task OnInitializedAsync()
         {
-            var result = await _examService.GetQuestionOptionsAsync(ExamId, Question.Id);
-            if (result.Succeeded)
+            if (Question is not null)
             {
-                _model.Options.AddRange(result.Data.Select(o => new CreateOptionRequest
+                var result = await _examService.GetQuestionOptionsAsync(ExamId, Question.Id);
+                if (result.Succeeded)
                 {
-                    Text = o.Text,
-                    Answer = o.Answer
-                }));
-                _model.SelectedTag = _model.Options?.FirstOrDefault(o => o.Answer == true)?.Tag;
-            }
-            else
-            {
-                _snackBar.Add(result.Error.Message, Severity.Error);
+                    _model.Options.AddRange(result.Data.Select(o => new CreateOptionRequest
+                    {
+                        Text = o.Text,
+                        Answer = o.Answer
+                    }));
+                    _model.SelectedTag = _model.Options?.FirstOrDefault(o => o.Answer == true)?.Tag;
+                }
+                else
+                {
+                    _snackBar.Add(result.Error.Message, Severity.Error);
+                }
             }
         }
 

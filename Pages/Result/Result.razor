@@ -1,0 +1,97 @@
+@page "/result/{id:long}"
+@using Transport.Shared.Models
+@using Humanizer
+
+<OnTestTitle Title="Exam" Description="Answer the question" />
+
+<MudList Clickable="true">
+    <MudListItem Text="@_duration" Icon="@Icons.Material.Filled.AccessTime" />
+</MudList>
+
+<MudTabs Elevation="4" Rounded="true" Color="@Color.Secondary" @bind-ActivePanelIndex="_activeIndex">
+    @{
+        int i = 0;
+    }
+    @foreach (var answer in _model.Answers)
+    {
+        i++;
+        <MudTabPanel Text="@(i.ToString())" Disabled="_disabled">
+            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 70vh;">
+                <MudPaper Elevation="25" Class="pa-8" Style="width: 500px; padding-top: 0px !important;">
+                    @if (_processing)
+                        {
+                        <MudProgressLinear Color="Color.Secondary" Indeterminate="true"
+                        Style="margin-left: -30px; margin-right: -30px;" />
+                        }
+                    <EditForm Model="@_model" style="padding-top: 30px;">
+                        <MudGrid>
+                            <MudItem xs="12">
+                                @{
+                                    string d = TimeSpan.FromSeconds(answer.Question.Duration).Humanize(2);
+                                }
+                                <MudField Label="Recommended Time" Variant="Variant.Outlined">@d</MudField>
+                            </MudItem>
+                            <MudItem xs="12" sm="6" md="6">
+                                <MudField Label="Score" Variant="Variant.Outlined">@answer.Question.Score</MudField>
+                            </MudItem>
+                            <MudItem xs="12" sm="6" md="6">
+                                <MudField Label="NegativeScore" Variant="Variant.Outlined">@answer.Question.NegativeScore
+                                </MudField>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudField Label="Question" Variant="Variant.Outlined">@answer.Question.Text</MudField>
+                            </MudItem>
+                            @if (answer.Question.Type == QuestionType.Descriptive)
+                            {
+                                <MudItem xs="12">
+                                    <MudTextField For="@(() => answer.Text)" @bind-Value="answer.Text" Label="Text"
+                                Variant="Variant.Outlined" Lines="5" />
+                                </MudItem>
+                            }
+                            else if (answer.Question.Type == QuestionType.MultipleChoice)
+                            {
+                                @foreach (var opt in answer.SelectedOptions)
+                                {
+                                    <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                                        <MudCheckBox @bind-Checked="opt.Answer" Color="Color.Primary" Dense="true">
+                                            @{
+                                                var txt = answer.Question.Options.First(o => o.Id == opt.OptionId).Text;
+                                }
+                                <MudField Variant="Variant.Outlined" FullWidth="true" style="width: 400px;">@txt
+                                </MudField>
+                            </MudCheckBox>
+                        </MudItem>
+                                }
+                            }
+                            else if (answer.Question.Type == QuestionType.SingleChoice)
+                            {
+                                <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                                    <MudRadioGroup @bind-SelectedOption="answer.SelectedTag">
+                                        @foreach (var opt in answer.SelectedOptions)
+                                        {
+                                    <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                                        <MudRadio Option="opt.OptionId" Color="Color.Primary">
+                                            @{
+                                                    var txt = answer.Question.Options.First(o => o.Id == opt.OptionId).Text;
+                                        }
+                                        <MudField Variant="Variant.Outlined" FullWidth="true" style="width: 400px;">@txt
+                                        </MudField>
+                                    </MudRadio>
+                                </MudItem>
+                                        }
+                            </MudRadioGroup>
+                        </MudItem>
+                            }
+                            <MudItem xs="12" Class="d-flex justify-center">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                                Style="width: 100%;" OnClick="@(() => SubmitAsync(answer))">Submit</MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    </EditForm>
+                </MudPaper>
+            </MudContainer>
+        </MudTabPanel>
+    }
+
+    @{ SetCurrentTab(); }
+    </MudTabs>

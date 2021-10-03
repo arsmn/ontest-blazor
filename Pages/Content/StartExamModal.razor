@@ -1,0 +1,62 @@
+@using Humanizer;
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper>
+            <MudCardMedia Image="@_cover" Height="360" />
+            <MudList Clickable="true">
+                <MudListItem Text="@_duration" Icon="@Icons.Material.Filled.AccessTime" />
+                <MudListItem Text="@_totalQuestions" Icon="@Icons.Material.Filled.Help" />
+                <MudListItem Text="@_totalScores" Icon="@Icons.Material.Filled.DoneAll" />
+                <MudListItem Text="@_totalNegativeScores" Icon="@Icons.Material.Filled.Clear" />
+            </MudList>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="SubmitAsync">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter] public long ExamId { get; set; }
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    private string _duration;
+    private string _totalScores;
+    private string _totalQuestions;
+    private string _totalNegativeScores;
+    private string _cover;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _cover = $"http://localhost:8080/files/exams/{ExamId}/cover";
+        var result = await _examService.GetExamStatsAsync(ExamId);
+        if (result.Succeeded)
+        {
+            _duration = TimeSpan.FromSeconds(result.Data.TotalDuration).Humanize(2);
+            _totalScores = result.Data.TotalScores.ToString() + "+";
+            _totalNegativeScores = result.Data.TotalNegativeScores.ToString() + "-";
+            _totalQuestions = result.Data.TotalQuestions.ToString();
+        }
+    }
+
+
+
+    private async Task SubmitAsync()
+    {
+        var result = await _examService.ParticipateExam(ExamId);
+        if (result.Succeeded)
+        {
+            _snackBar.Add("Exam started!", Severity.Info);
+            _navigationManager.NavigateTo($"/result/{result.Data.Id}");
+        }
+        else
+        {
+            _snackBar.Add(result.Error.Message, Severity.Error);
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

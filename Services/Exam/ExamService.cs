@@ -95,5 +95,47 @@ namespace OnTest.Blazor.Services.Exam
             var result = await response.ToResult<List<Option>>();
             return result;
         }
+
+        public async Task<IResult> PublishExamAsync(long eid)
+        {
+            var response = await _httpClient.PostAsync($"exam/{eid}/publish", null);
+            var result = await response.ToResult();
+            return result;
+        }
+
+        public async Task<IResult<ExamStatsResponse>> GetExamStatsAsync(long eid)
+        {
+            var response = await _httpClient.GetAsync($"exam/{eid}/stats");
+            var result = await response.ToResult<ExamStatsResponse>();
+            return result;
+        }
+
+        public async Task<Paginated<Transport.Shared.Models.Exam>> SearchExamAsync(Pagination pagination)
+        {
+            var response = await _httpClient.GetAsync(pagination.BuildUrl($"exam/search"));
+            var result = await response.ToPaginated<Transport.Shared.Models.Exam>();
+            return result;
+        }
+
+        public async Task<IResult<ExamResult>> ParticipateExam(long eid)
+        {
+            var response = await _httpClient.PostAsync($"exam/{eid}/participate", null);
+            var result = await response.ToResult<ExamResult>();
+            return result;
+        }
+
+        public async Task<IResult<ExamResult>> GetExamResult(long rid)
+        {
+            var response = await _httpClient.GetAsync($"result/{rid}");
+            var result = await response.ToResult<ExamResult>();
+            return result;
+        }
+
+        public async Task<IResult> SubmitAnswer(SubmitAnswerRequest request)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"result/{request.Id}/submit", request, JsonExtensions.Options);
+            var result = await response.ToResult();
+            return result;
+        }
     }
 }

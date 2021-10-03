@@ -6,7 +6,7 @@ namespace OnTest.Blazor.Transport.Exam
     public class CreateExamRequest
     {
         [JsonIgnore]
-         public long Id { get; set; }
+        public long Id { get; set; }
         public string Title { get; set; }
         public bool FreeMovement { get; set; }
         public DateTime? StartAt { get; set; }
@@ -23,15 +23,23 @@ namespace OnTest.Blazor.Transport.Exam
         {
             if (StartAt.HasValue && StartAtTime.HasValue)
             {
-                StartAt = StartAt.Value.Add(StartAtTime.Value);
-                StartAt = StartAt.Value.ToUniversalTime();
+                StartAt = new DateTime(StartAt.Value.Year,
+                    StartAt.Value.Month,
+                    StartAt.Value.Day,
+                    StartAtTime.Value.Hours,
+                    StartAtTime.Value.Minutes,
+                    StartAtTime.Value.Seconds, DateTimeKind.Local);
             }
 
 
             if (Deadline.HasValue && DeadlineTime.HasValue)
             {
-                Deadline = Deadline.Value.Add(DeadlineTime.Value);
-                Deadline = Deadline.Value.ToUniversalTime();
+                Deadline = new DateTime(Deadline.Value.Year,
+                    Deadline.Value.Month,
+                    Deadline.Value.Day,
+                    DeadlineTime.Value.Hours,
+                    DeadlineTime.Value.Minutes,
+                    DeadlineTime.Value.Seconds, DateTimeKind.Local);
             }
 
             if (Once)

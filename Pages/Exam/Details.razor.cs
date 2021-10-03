@@ -19,6 +19,7 @@ namespace OnTest.Blazor.Pages.Exam
         private readonly CreateExamRequest _model = new();
 
         private bool _processing;
+        private bool _disabled;
 
         protected override async Task OnInitializedAsync()
         {
@@ -39,6 +40,8 @@ namespace OnTest.Blazor.Pages.Exam
                 _model.DeadlineTime = result.Data.Deadline.HasValue ? result.Data.Deadline.Value.TimeOfDay : null;
                 _model.Once = !_model.Deadline.HasValue;
                 _model.FreeMovement = result.Data.FreeMovement;
+
+                _disabled = result.Data.State == Transport.Shared.Models.ExamState.Published;
 
                 _examCover = !string.IsNullOrEmpty(result.Data.Cover) ? $"{result.Data.Cover}?hash={Guid.NewGuid().ToString()}" : "";
                 _cardCover = !string.IsNullOrEmpty(result.Data.Cover) ? $"{result.Data.Cover}?hash={Guid.NewGuid().ToString()}" : "";
@@ -63,6 +66,32 @@ namespace OnTest.Blazor.Pages.Exam
                 _snackBar.Add(result.Error.Message, Severity.Error);
             }
             _processing = false;
+        }
+
+        private async Task PublishAsync()
+        {
+            var parameters = new DialogParameters
+            {
+                { nameof(Shared.Dialogs.Confirmation.Title), "Publish Exam" },
+                { nameof(Shared.Dialogs.Confirmation.Content), "Are you sure you want to publish this exam" },
+                { nameof(Shared.Dialogs.Confirmation.Icon), Icons.Material.Filled.Help },
+                { nameof(Shared.Dialogs.Confirmation.Color), Color.Primary },
+            };
+            var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+            var dialog = await _dialogService.Show<Shared.Dialogs.Confirmation>("Publish", parameters, options).Result;
+            if (!dialog.Cancelled)
+            {
+                var result = await _examService.PublishExamAsync(this.ExamId);
+                if (result.Succeeded)
+                {
+                    _disabled = true;
+                    _snackBar.Add("Exam published!", Severity.Success);
+                }
+                else
+                {
+                    _snackBar.Add(result.Error.Message, Severity.Error);
+                }
+            }
         }
 
         private string _tmpCover;

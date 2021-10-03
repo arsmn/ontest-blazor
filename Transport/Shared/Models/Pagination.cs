@@ -18,7 +18,7 @@ namespace OnTest.Blazor.Transport.Shared.Models
             {
                 { "page", this.Page.ToString() ?? "1" },
                 { "page_size", this.PageSize.ToString() ?? "10" },
-                { "quesry", this.Query ?? ""},
+                { "query", this.Query ?? ""},
                 { "sort", this.SortLabel ?? ""},
                 { "sort_dir", this.SortLabel ?? "" }
             };

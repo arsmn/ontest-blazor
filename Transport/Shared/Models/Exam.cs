@@ -8,8 +8,6 @@ namespace OnTest.Blazor.Transport.Shared.Models
         public long Id { get; set; }
         public long Examiner { get; set; }
         public string Title { get; set; }
-
-        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ExamState State { get; set; }
         public long Duration { get; set; }
         public DateTime StartAt { get; set; }
