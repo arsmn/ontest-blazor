@@ -23,7 +23,6 @@ namespace OnTest.Blazor.Pages.Result
         private bool _disabled;
         private int _activeIndex;
         private bool _processing;
-        private bool _reviewMode;
 
         protected override async Task OnInitializedAsync()
         {
@@ -82,14 +81,10 @@ namespace OnTest.Blazor.Pages.Result
                 _totalNegativeScores = result.Data.TotalNegativeScores.ToString() + "-";
                 _totalQuestionsStr = result.Data.TotalQuestions.ToString();
                 _totalQuestions = result.Data.TotalQuestions;
-                _reviewMode = DateTime.Now.CompareTo(_endDate) > 0;
 
-                if (!_reviewMode)
-                {
-                    _timer = new Timer(1000);
-                    _timer.Elapsed += Counter;
-                    _timer.Enabled = true;
-                }
+                _timer = new Timer(1000);
+                _timer.Elapsed += Counter;
+                _timer.Enabled = true;
             }
             else
             {
@@ -101,7 +96,7 @@ namespace OnTest.Blazor.Pages.Result
         {
             if (DateTime.Now.CompareTo(_endDate) > 0)
             {
-                _reviewMode = true;
+                _navigationManager.NavigateTo($"/result/{Id}/assessment");
             }
             _duration = _endDate.Subtract(DateTime.Now).Humanize(2);
             StateHasChanged();

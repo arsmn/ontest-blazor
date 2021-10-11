@@ -1,0 +1,107 @@
+@page "/result/{id:long}/assessment"
+@using Transport.Shared.Models
+@using Humanizer
+
+<OnTestTitle Title="Exam" Description="Assessment" />
+
+<MudTabs Elevation="4" Rounded="true" Color="@Color.Secondary" @bind-ActivePanelIndex="_activeIndex">
+    @{
+        int i = 0;
+    }
+    @foreach (var answer in _model.Answers)
+    {
+        i++;
+        int final = 0;
+        bool disabled = _model.Answers.Count == i;
+                                 
+        <MudTabPanel Text="@(i.ToString())">
+            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 70vh;">
+                <MudPaper Elevation="25" Class="pa-8" Style="width: 500px; padding-top: 0px !important;">
+                    <EditForm Model="@_model" style="padding-top: 30px;">
+                        <MudGrid>
+                            <MudItem xs="12" sm="6" md="6">
+                                <MudField Label="Score" Variant="Variant.Outlined">@answer.Question.Score</MudField>
+                            </MudItem>
+                            <MudItem xs="12" sm="6" md="6">
+                                <MudField Label="NegativeScore" Variant="Variant.Outlined">@answer.Question.NegativeScore
+                                </MudField>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudField Label="Question" Variant="Variant.Outlined">@answer.Question.Text</MudField>
+                            </MudItem>
+                            @if (answer.Question.Type == QuestionType.Descriptive)
+                            {
+                                <MudItem xs="12">
+                                    <MudField Label="Answer" Variant="Variant.Outlined" Lines="5">@answer.Text</MudField>
+                                </MudItem>
+                            }
+                            else if (answer.Question.Type == QuestionType.MultipleChoice)
+                            {
+                                @foreach (var opt in answer.SelectedOptions)
+                                {
+                                    <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                                        @{
+                                            var o = answer.Question.Options.First(o => o.Id == opt.OptionId);
+                                            string txt = o.Text;
+                                            var color = o.Answer ? Color.Success : Color.Error;
+                                            string adr = o.Answer ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Clear;
+                                            if (opt.Answer)
+                                            {
+                                                if (o.Answer)
+                                                    final += answer.Question.Score;
+                                                else
+                                                    final -= answer.Question.NegativeScore;
+                                            }
+                                        }
+                                        <MudCheckBox @bind-Checked="opt.Answer" Color="@color" Dense="true" ReadOnly="true">
+                                            <MudTextField Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@adr"
+                                    AdornmentColor="color" FullWidth="true" style="width: 400px;" @bind-Value="txt" ReadOnly="true" />
+                                        </MudCheckBox>
+                                    </MudItem>
+                                }
+                            }
+                            else if (answer.Question.Type == QuestionType.SingleChoice)
+                            {
+                                <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                                    <MudRadioGroup @bind-SelectedOption="answer.SelectedTag">
+                                        @foreach (var opt in answer.SelectedOptions)
+                                        {
+                                            var o = answer.Question.Options.First(o => o.Id == opt.OptionId);
+                                            string txt = o.Text;
+                                            var color = o.Answer ? Color.Success : Color.Error;
+                                            string adr = o.Answer ? Icons.Material.Outlined.Check : Icons.Material.Outlined.Clear;
+
+                                            if (opt.Answer)
+                                            {
+                                                if (o.Answer)
+                                                    final += answer.Question.Score;
+                                                else
+                                                    final -= answer.Question.NegativeScore;
+                                            }
+
+                                    <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                                        <MudRadio Option="opt.OptionId" Color="@color" ReadOnly="true">
+                                            <MudTextField Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@adr"
+                                    AdornmentColor="color" FullWidth="true" style="width: 400px;" @bind-Value="txt" ReadOnly="true" />
+                                    </MudRadio>
+                                </MudItem>
+                                        }
+                                    </MudRadioGroup>
+                                </MudItem>
+                            }
+                             <MudItem xs="12" Class="d-flex justify-center">
+                                 <MudList Clickable="true">
+                                     <MudListItem Text="@final.ToString()" Icon="@Icons.Material.Filled.RateReview" />
+                                </MudList>
+                            </MudItem>                            
+                             <MudItem xs="12" Class="d-flex justify-center">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                                Style="width: 100%;" OnClick="Next" Disabled="@(disabled)">Next</MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    </EditForm>
+                </MudPaper>
+            </MudContainer>
+        </MudTabPanel>
+    }
+</MudTabs>
